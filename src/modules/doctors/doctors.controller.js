@@ -13,7 +13,14 @@ const getAllDoctors = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({results: doctors.length, doctors})
 })
 
+const updateDoctor = errorAsyncHandler(async (req, res, next) => {
+    if (req.file) req.body.profile = req.file.filename;
+    const doctor = await Doctor.findOneAndUpdate({_id: req.params.docId}, req.body, {new: true});
+    res.status(200).json({message: "Doctor updated successfully", doctor})
+})
+
 export {
     addDoctor,
-    getAllDoctors
+    getAllDoctors,
+    updateDoctor
 }
