@@ -80,7 +80,7 @@ doctorSchema.pre("save", function (next) {
     next()
 })
 
-doctorSchema.pre("findOneAndUpdate", function (next) {
+doctorSchema.pre("findOneAndUpdate", function (next) {    
     if (this._update.password) {
         const hashPassword = bcrypt.hashSync(this._update.password, 8);
         this._update.password = hashPassword    

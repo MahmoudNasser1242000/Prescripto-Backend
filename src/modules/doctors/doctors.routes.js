@@ -1,5 +1,5 @@
 import {Router} from "express"
-import { addDoctor, getAllDoctors, updateDoctor } from "./doctors.controller.js";
+import { addDoctor, deleteDoctor, getAllDoctors, updateDoctor } from "./doctors.controller.js";
 import checkDoctorEmail from "../../middlewares/checkDoctorEmail.js";
 import filesUpload from "../../../services/filesUpload.js";
 import checkDoctorId from "../../middlewares/checkDoctorId.js";
@@ -10,6 +10,8 @@ doctorRouter.route("/")
     .post(checkDoctorEmail, filesUpload("doctors").single("image"), addDoctor)
     .get(getAllDoctors)
 
-doctorRouter.patch("/:docId", checkDoctorId, checkDoctorEmail, filesUpload("doctors").single("image"), checkDoctorEmail, updateDoctor)
+doctorRouter.route("/:docId")
+    .patch(checkDoctorId, checkDoctorEmail, filesUpload("doctors").single("image"), checkDoctorEmail, updateDoctor)
+    .delete(checkDoctorId, deleteDoctor)
 
 export default doctorRouter;
