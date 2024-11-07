@@ -8,6 +8,12 @@ const addDoctor = errorAsyncHandler(async (req, res, next) => {
     res.status(201).json({message: "Doctor created successfully", doctor})
 })
 
+const getAllDoctors = errorAsyncHandler(async (req, res, next) => {    
+    const doctors = await Doctor.find();
+    res.status(200).json({results: doctors.length, doctors})
+})
+
 export {
-    addDoctor
+    addDoctor,
+    getAllDoctors
 }

@@ -4,9 +4,10 @@ import dbconnection from './database/dbConnection.js';
 import globalErrorMiddleware from './services/globalErrorMiddlewareFunc.js';
 import AppError from './utils/AppErrorClass.js';
 import Bootstrap from './src/Bootstrap.js';
+
 const app = express();
 app.use(express.json())
-app.use("/uploads", express.static("uploads"))
+app.use("/uploads", express.static("uploads/doctors"))
 app.use(cors())
 
 dbconnection()
