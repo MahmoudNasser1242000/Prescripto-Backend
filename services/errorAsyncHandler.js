@@ -3,3 +3,5 @@ const errorAsyncHandler = (fn) => {
         fn(req, res, next).catch((error) => next(error))
     }
 }
+
+export default errorAsyncHandler
