@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import bcrypt from "bcrypt";
+
 const { Schema } = mongoose;
 
 const doctorSchema = new Schema({
@@ -24,7 +26,7 @@ const doctorSchema = new Schema({
     profile: {
         type: String,
         trim: true,
-        required: false
+        required: true
     },
     speciality: {
         type: String,
@@ -52,7 +54,7 @@ const doctorSchema = new Schema({
         required: true,
         trim: true,
         minLength: [3, "Doctor name must be at least 3 characters"],
-        maxLength: [150, "Doctor name must be at most 150 characters"],
+        maxLength: [1000, "Doctor name must be at most 1000 characters"],
     },
     available: {
         type: Boolean,
@@ -62,15 +64,29 @@ const doctorSchema = new Schema({
         type: Number,
         required: true,
     },
-    address: {
-        type: [String],
-        required: true
-    },
     birth_date: {
         type: Date,
         required: true
     },
 }, {timestamps: true});
+
+doctorSchema.post("init", (doc) => {
+    doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+})
+
+doctorSchema.pre("save", function (next) {
+    const hashPassword = bcrypt.hashSync(this.password, 8);
+    this.password = hashPassword
+    next()
+})
+
+doctorSchema.pre("findOneAndUpdate", function (next) {
+    if (this._update.password) {
+        const hashPassword = bcrypt.hashSync(this._update.password, 8);
+        this._update.password = hashPassword    
+    }
+    next()
+})
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
 export default Doctor;
