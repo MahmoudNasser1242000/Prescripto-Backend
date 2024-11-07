@@ -13,6 +13,11 @@ const getAllDoctors = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({results: doctors.length, doctors})
 })
 
+const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {    
+    const doctors = await Doctor.findById(req.params.docId);
+    res.status(200).json({doctors})
+})
+
 const updateDoctor = errorAsyncHandler(async (req, res, next) => {
     if (req.file) req.body.profile = req.file.filename;
     const doctor = await Doctor.findOneAndUpdate({_id: req.params.docId}, req.body, {new: true});
@@ -27,6 +32,7 @@ const deleteDoctor = errorAsyncHandler(async (req, res, next) => {
 export {
     addDoctor,
     getAllDoctors,
+    getSpecificDoctor,
     updateDoctor,
     deleteDoctor
 }
