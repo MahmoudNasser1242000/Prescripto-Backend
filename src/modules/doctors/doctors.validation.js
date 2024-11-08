@@ -73,6 +73,24 @@ const addDoctorSchema = Joi.object({
             "string.max": "about field must be at most 1000 characters"
         }),
 
+    gender: Joi.string()
+        .optional()
+        .valid("male", "female")
+        .messages({
+            "any.valid": "Gender must be one of male or female",
+        }),
+
+    role: Joi.string()
+        .optional()
+        .valid("doctor")
+        .messages({
+            "any.valid": "Role must be doctor only",
+        }),
+
+    phone: Joi.string()
+        .required()
+        .pattern(/^01([0-2]|5)[0-9]{8}$/),
+
     available: Joi.boolean()
         .optional()
         .default(true),
@@ -167,6 +185,24 @@ const updateDoctorSchema = Joi.object({
             "string.min": "about field must be at least 3 characters",
             "string.max": "about field must be at most 1000 characters"
         }),
+
+    gender: Joi.string()
+        .optional()
+        .valid("male", "female")
+        .messages({
+            "any.valid": "Gender must be one of male or female",
+        }),
+
+    role: Joi.string()
+        .optional()
+        .valid("doctor")
+        .messages({
+            "any.valid": "Role must be doctor only",
+        }),
+
+    phone: Joi.string()
+        .optional()
+        .pattern(/^01([0-2]|5)[0-9]{8}$/),
 
     available: Joi.boolean()
         .optional()

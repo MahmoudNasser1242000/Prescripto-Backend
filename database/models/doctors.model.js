@@ -34,29 +34,45 @@ const doctorSchema = new Schema({
         type: String,
         required: true,
         trim: true,
-        minLength: [3, "Doctor name must be at least 3 characters"],
-        maxLength: [50, "Doctor name must be at most 50 characters"],
+        minLength: [3, "Speciality must be at least 3 characters"],
+        maxLength: [50, "Speciality must be at most 50 characters"],
     },
     degree: {
         type: String,
         required: true,
         trim: true,
-        minLength: [3, "Doctor name must be at least 3 characters"],
-        maxLength: [50, "Doctor name must be at most 50 characters"],
+        minLength: [3, "Degree must be at least 3 characters"],
+        maxLength: [50, "Degree must be at most 50 characters"],
     },
     experience: {
         type: String,
         required: true,
         trim: true,
-        minLength: [3, "Doctor name must be at least 3 characters"],
-        maxLength: [50, "Doctor name must be at most 50 characters"],
+        minLength: [3, "Experience must be at least 3 characters"],
+        maxLength: [50, "Experience must be at most 50 characters"],
     },
     about: {
         type: String,
         required: true,
         trim: true,
-        minLength: [3, "Doctor name must be at least 3 characters"],
-        maxLength: [1000, "Doctor name must be at most 1000 characters"],
+        minLength: [3, "About must be at least 3 characters"],
+        maxLength: [1000, "About must be at most 1000 characters"],
+    },
+    gender: {
+        type: String,
+        trim: true,
+        enum: ["male", "female"],
+        default: "male"
+    },
+    role: {
+        type: String,
+        trim: true,
+        default: "doctor"
+    },
+    phone: {
+        type: String,
+        trim: true,
+        required: true
     },
     available: {
         type: Boolean,
