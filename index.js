@@ -8,6 +8,7 @@ import Bootstrap from './src/Bootstrap.js';
 const app = express();
 app.use(express.json())
 app.use("/uploads", express.static("uploads/doctors"))
+app.use("/uploads", express.static("uploads/users"))
 app.use(cors())
 
 dbconnection()

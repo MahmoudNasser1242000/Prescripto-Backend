@@ -32,7 +32,8 @@ const userSchema = new Schema({
     },
     gender: {
         type: String,
-        enum: ["male, female"]
+        enum: ["male", "female"],
+        default: "male"
     },
     phone: {
         type: String,
@@ -63,6 +64,24 @@ const userSchema = new Schema({
         maxLength: [1000, "Bio name must be at most 1000 characters"],
     }
 }, { timestamps: true });
+
+userSchema.post("init", (doc) => {
+    doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+})
+
+userSchema.pre("save", function (next) {
+    const hashPassword = bcrypt.hashSync(this.password, 8);
+    this.password = hashPassword
+    next()
+})
+
+userSchema.pre("findOneAndUpdate", function (next) {
+    if (this._update.password) {
+        const hashPassword = bcrypt.hashSync(this._update.password, 8);
+        this._update.password = hashPassword
+    }
+    next()
+})
 
 const User = mongoose.model('User', userSchema);
 export default User;
