@@ -25,7 +25,7 @@ const updateDoctor = errorAsyncHandler(async (req, res, next) => {
 })
 
 const deleteDoctor = errorAsyncHandler(async (req, res, next) => {
-    const doctor = await Doctor.findByIdAndDelete(req.params.docId);
+    const doctor = await Doctor.findOneAndDelete({_id: req.params.docId});
     res.status(202).json({message: "Doctor deleted successfully", doctor})
 })
 

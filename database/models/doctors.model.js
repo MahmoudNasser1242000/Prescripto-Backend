@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 import bcrypt from "bcrypt";
+import fs from "fs";
+import AppError from '../../utils/AppErrorClass.js';
 
 const { Schema } = mongoose;
 
@@ -68,7 +70,7 @@ const doctorSchema = new Schema({
         type: Date,
         required: true
     },
-}, {timestamps: true});
+}, { timestamps: true });
 
 doctorSchema.post("init", (doc) => {
     doc.profile = `http://localhost:3000/uploads/${doc.profile}`
@@ -80,11 +82,33 @@ doctorSchema.pre("save", function (next) {
     next()
 })
 
-doctorSchema.pre("findOneAndUpdate", function (next) {    
+doctorSchema.pre("findOneAndUpdate", function (next) {
     if (this._update.password) {
         const hashPassword = bcrypt.hashSync(this._update.password, 8);
-        this._update.password = hashPassword    
+        this._update.password = hashPassword
     }
+    next()
+})
+
+doctorSchema.pre("findOneAndUpdate", async function (next) {    
+    if (this._update.profile) {
+        const docToUpdate = await Doctor.findOne(this.getQuery());
+        fs.unlink(`./uploads/doctors/${docToUpdate.profile.split("uploads/")[1]}`, (err) => {
+            if (err) {
+                return next(new AppError("Can not find this profile image", 404))
+            }
+        })
+    }
+    next()
+})
+
+doctorSchema.pre("findOneAndDelete", async function (next) {
+    const docToUpdate = await Doctor.findOne(this.getQuery());
+    fs.unlink(`./uploads/doctors/${docToUpdate.profile.split("uploads/")[1]}`, (err) => {
+        if (err) {
+            return next(new AppError("Can not find this profile image", 404))
+        }
+    })
     next()
 })
 

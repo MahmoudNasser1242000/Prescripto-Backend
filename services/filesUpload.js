@@ -7,9 +7,7 @@ const filesUpload = (folderName) => {
         destination: function (req, file, cb) {
             cb(null, `uploads/${folderName}`)
         },
-        filename: function (req, file, cb) {
-            console.log(req.file);
-            
+        filename: function (req, file, cb) {            
             const uniqueSuffix = new mongoose.Types.ObjectId + '_' + file.originalname
             cb(null, uniqueSuffix)
         }
