@@ -5,16 +5,18 @@ import filesUpload from "../../../services/filesUpload.js";
 import checkDoctorId from "../../middlewares/checkDoctorId.js";
 import schemaValidation from "../../../services/validationSchema.js";
 import { addDoctorSchema, doctorIdSchema, updateDoctorSchema } from "./doctors.validation.js";
+import protectAuth from "../../middlewares/ProtectAuth.js";
+import roleAccess from "../../middlewares/roleAccess.js";
 
 const doctorRouter = Router();
 
 doctorRouter.route("/")
-    .post(filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
-    .get(getAllDoctors)
+    .post(protectAuth, roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
+    .get(protectAuth, getAllDoctors)
 
 doctorRouter.route("/:docId")
-    .patch(filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
-    .delete(schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
-    .get(schemaValidation(doctorIdSchema), checkDoctorId, getSpecificDoctor)
+    .patch(protectAuth, roleAccess("manager", "doctor"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
+    .delete(protectAuth, roleAccess("manager"), schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
+    .get(protectAuth, schemaValidation(doctorIdSchema), checkDoctorId, getSpecificDoctor)
 
 export default doctorRouter;

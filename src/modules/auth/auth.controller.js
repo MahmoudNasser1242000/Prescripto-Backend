@@ -18,18 +18,17 @@ const signin = errorAsyncHandler(async (req, res, next) => {
     const user = await User.findOne({email});
     const doctor = await Doctor.findOne({email});
 
-    let token;
     if (user && bcrypt.compareSync(password, user.password)) {
-        token = jwt.sign({ name: user.name, email: user.email, userId: user._id, role: user.role }, "Login System");
-        
+        const token = jwt.sign({ name: user.name, email: user.email, userId: user._id, role: user.role }, "Login System");
+        res.status(201).json({message: "Signin successfully", user, token});
+
     } else if (doctor && bcrypt.compareSync(password, doctor.password)) {
-        token = jwt.sign({ name: doctor.name, email: doctor.email, userId: doctor._id, role: doctor.role }, "Login System");
+        const token = jwt.sign({ name: doctor.name, email: doctor.email, docId: doctor._id, role: doctor.role }, "Login System");
+        res.status(201).json({message: "Signin successfully", doctor, token});
 
     } else {
         return next(new AppError("Wrong email or password", 400))
     }
-
-    res.status(201).json({message: "Signin successfully", user, token})
 })
 
 export {
