@@ -83,5 +83,41 @@ userSchema.pre("findOneAndUpdate", function (next) {
     next()
 })
 
+userSchema.pre("findOneAndUpdate", async function (next) {
+    if (this._update.profile) {
+        const docToUpdate = await Doctor.findOne(this.getQuery());
+
+        let folderPath;
+        if (docToUpdate.role === "user") {
+            folderPath = `./uploads/users/${docToUpdate.profile.split("uploads/")[1]}`
+        } else {
+            folderPath = `./uploads/managers/${docToUpdate.profile.split("uploads/")[1]}`
+        }
+        fs.unlinkSync(folderPath, (err) => {
+            if (err) {
+                return next(new AppError("Can not find this profile image", 404))
+            }
+        })
+    }
+    next()
+})
+
+userSchema.pre("findOneAndDelete", async function (next) {
+    const docToUpdate = await Doctor.findOne(this.getQuery());
+
+    let folderPath;
+    if (docToUpdate.role === "user") {
+        folderPath = `./uploads/users/${docToUpdate.profile.split("uploads/")[1]}`
+    } else {
+        folderPath = `./uploads/managers/${docToUpdate.profile.split("uploads/")[1]}`
+    }
+    fs.unlinkSync(folderPath, (err) => {
+        if (err) {
+            return next(new AppError("Can not find this profile image", 404))
+        }
+    })
+    next()
+})
+
 const User = mongoose.model('User', userSchema);
 export default User;
