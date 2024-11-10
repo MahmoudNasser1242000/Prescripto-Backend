@@ -23,7 +23,7 @@ const getAllManagers = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({results: managers.length, managers})
 })
 
-const getSprcificUser = errorAsyncHandler(async (req, res, next) => {    
+const getSpecificUser = errorAsyncHandler(async (req, res, next) => {    
     const user = await User.findOne({_id: req.params.userId});
     if (!user) 
         return next(new AppError("Wrong user Id", 404))
@@ -44,7 +44,7 @@ export {
     addUserManager,
     getAllManagers,
     getAllusers,
-    getSprcificUser,
+    getSpecificUser,
     deleteUser,
     updateUser
 }

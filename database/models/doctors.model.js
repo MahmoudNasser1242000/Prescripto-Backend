@@ -82,6 +82,14 @@ const doctorSchema = new Schema({
         type: Number,
         required: true,
     },
+    active: {
+        type: Boolean,
+        default: true
+    },
+    activeExpire: {
+        type: Date,
+        default: "0000-01-01T00:00:00Z"
+    },
     birth_date: {
         type: Date,
         required: true
