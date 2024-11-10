@@ -77,6 +77,14 @@ const signupSchema = Joi.object({
             "string.max": "Job field must be at most 100 characters"
         }),
 
+    active: Joi.boolean()
+        .default(true)
+        .optional(),
+
+    activeExpire: Joi.date()
+        .default("0000-01-01T00:00:00Z")
+        .optional(),
+
     image: Joi.object({
         fieldname: Joi.string().required(),
         originalname: Joi.string().required(),
@@ -86,8 +94,8 @@ const signupSchema = Joi.object({
         filename: Joi.string().required(),
         path: Joi.string().required(),
         size: Joi.number().max(5242880).required()
-    }).required()
-})
+    }).optional()
+}).options({ allowUnknown: false });
 
 const signinSchema = Joi.object({
     email: Joi.string()
@@ -109,7 +117,7 @@ const signinSchema = Joi.object({
             "string.min": "Password must be 6 to 50 characters",
             "string.max": "Password must be 6 to 50 characters"
         }),
-})
+}).options({ allowUnknown: false });
 
 export {
     signupSchema,

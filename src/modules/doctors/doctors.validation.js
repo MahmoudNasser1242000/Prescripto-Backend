@@ -111,7 +111,7 @@ const addDoctorSchema = Joi.object({
         path: Joi.string().required(),
         size: Joi.number().max(5242880).required()
     }).required()
-})
+}).options({ allowUnknown: false });
 
 const updateDoctorSchema = Joi.object({
     name: Joi.string()
@@ -128,26 +128,6 @@ const updateDoctorSchema = Joi.object({
         .optional()
         .messages({
             "string.email": "Email must be valid"
-        }),
-
-    password: Joi.string()
-        .optional()
-        .min(6)
-        .max(50)
-        .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
-        .messages({
-            "string.pattern": `Password must contains at least 3 numbers,
-            2 characters one of them must be uppercase 
-            and one special character`,
-            "string.min": "Password must be 6 to 50 characters",
-            "string.max": "Password must be 6 to 50 characters"
-        }),
-
-    repassword: Joi.string()
-        .optional()
-        .valid(Joi.ref('password'))
-        .messages({
-            "any.valid": "Password and repassword must be matched",
         }),
 
     speciality: Joi.string()
@@ -226,11 +206,11 @@ const updateDoctorSchema = Joi.object({
         path: Joi.string().optional(),
         size: Joi.number().max(5242880).optional()
     }).optional()
-})
+}).options({ allowUnknown: false });
 
 const doctorIdSchema = Joi.object({
     docId: Joi.string().hex().length(24).optional(),
-})
+}).options({ allowUnknown: false });
 
 export {
     addDoctorSchema,

@@ -28,7 +28,6 @@ const userSchema = new Schema({
     profile: {
         type: String,
         trim: true,
-        required: true
     },
     gender: {
         type: String,
@@ -56,6 +55,14 @@ const userSchema = new Schema({
         trim: true,
         minLength: [3, "Job must be at least 3 characters"],
         maxLength: [100, "Job name must be at most 100 characters"],
+    },
+    active: {
+        type: Boolean,
+        default: true
+    },
+    activeExpire: {
+        type: Date,
+        default: "0000-01-01T00:00:00Z"
     },
     bio: {
         type: String,

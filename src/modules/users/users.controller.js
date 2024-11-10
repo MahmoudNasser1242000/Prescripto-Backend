@@ -3,7 +3,11 @@ import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
 import AppError from "../../../utils/AppErrorClass.js";
 
 const addUserManager = errorAsyncHandler(async (req, res, next) => {    
-    if (req.file) req.body.profile = req.file.filename;
+    if (req.file) {
+        req.body.profile = req.file.filename;
+    } else {
+        req.body.profile = "";
+    }
     req.body.role = "manager";
     const userModel = new User(req.body);
     const user = await userModel.save()
@@ -27,7 +31,6 @@ const getSprcificUser = errorAsyncHandler(async (req, res, next) => {
 })
 
 const updateUser = errorAsyncHandler(async (req, res, next) => {
-    if (req.file) req.body.profile = req.file.filename;
     const user = await User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true});
     res.status(202).json({message: `${user.role === "user"? "User":"Manager"} updated successfully`, user})
 })
