@@ -103,13 +103,6 @@ const updateUserSchema = Joi.object({
     activeExpire: Joi.date()
         .optional(),
 
-    role: Joi.string()
-        .optional()
-        .valid("manager")
-        .messages({
-            "any.valid": "Role must be manager only",
-        }),
-
     userId: Joi.string().hex().length(24).required(),
 }).options({ allowUnknown: false });
 

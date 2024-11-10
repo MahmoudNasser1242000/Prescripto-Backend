@@ -12,7 +12,7 @@ import UpdateUserActivity from "../../../utils/UpdateUserActivity.js";
 
 const userRouter = Router();
 
-userRouter.use(protectAuth, UpdateUserActivity)
+userRouter.use(protectAuth)
 
 userRouter.get("/getAllManagers", roleAccess("manager"), getAllManagers)
 
