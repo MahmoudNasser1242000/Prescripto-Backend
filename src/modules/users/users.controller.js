@@ -26,6 +26,12 @@ const getSprcificUser = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({user})
 })
 
+const updateUser = errorAsyncHandler(async (req, res, next) => {
+    if (req.file) req.body.profile = req.file.filename;
+    const user = await User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true});
+    res.status(202).json({message: `${user.role === "user"? "User":"Manager"} updated successfully`, user})
+})
+
 const deleteUser = errorAsyncHandler(async (req, res, next) => {
     const user = await User.findOneAndDelete({_id: req.params.userId});
     res.status(202).json({message: "User deleted successfully", user})
@@ -36,5 +42,6 @@ export {
     getAllManagers,
     getAllusers,
     getSprcificUser,
-    deleteUser
+    deleteUser,
+    updateUser
 }
