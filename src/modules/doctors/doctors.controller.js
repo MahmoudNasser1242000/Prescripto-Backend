@@ -14,8 +14,10 @@ const getAllDoctors = errorAsyncHandler(async (req, res, next) => {
 })
 
 const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {    
-    const doctors = await Doctor.findById(req.params.docId);
-    res.status(200).json({doctors})
+    const doctor = await Doctor.findById(req.params.docId);
+    if (!doctor) 
+        return next(new AppError("Wrong doctor Id", 404))
+    res.status(200).json({doctor})
 })
 
 const updateDoctor = errorAsyncHandler(async (req, res, next) => {
