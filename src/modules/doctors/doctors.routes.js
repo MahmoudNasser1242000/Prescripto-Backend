@@ -10,13 +10,15 @@ import roleAccess from "../../middlewares/roleAccess.js";
 
 const doctorRouter = Router();
 
+doctorRouter.use(protectAuth)
+
 doctorRouter.route("/")
-    .post(protectAuth, roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
+    .post(roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
     .get(protectAuth, getAllDoctors)
 
 doctorRouter.route("/:docId")
-    .patch(protectAuth, roleAccess("manager", "doctor"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
-    .delete(protectAuth, roleAccess("manager"), schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
-    .get(protectAuth, schemaValidation(doctorIdSchema), checkDoctorId, getSpecificDoctor)
+    .patch(roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
+    .delete(roleAccess("manager"), schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
+    .get(schemaValidation(doctorIdSchema), checkDoctorId, getSpecificDoctor)
 
 export default doctorRouter;

@@ -101,14 +101,6 @@ const addDoctorSchema = Joi.object({
     birth_date: Joi.date()
         .required(),
 
-    active: Joi.boolean()
-        .default(true)
-        .optional(),
-
-    activeExpire: Joi.date()
-        .default("0000-01-01T00:00:00Z")
-        .optional(),
-
     image: Joi.object({
         fieldname: Joi.string().required(),
         originalname: Joi.string().required(),
@@ -122,85 +114,9 @@ const addDoctorSchema = Joi.object({
 }).options({ allowUnknown: false });
 
 const updateDoctorSchema = Joi.object({
-    name: Joi.string()
-        .min(3)
-        .max(50)
-        .optional()
-        .messages({
-            "string.min": "Doctor name must be at least 3 characters",
-            "string.max": "Doctor name must be at most 50 characters"
-        }),
-
-    email: Joi.string()
-        .email()
-        .optional()
-        .messages({
-            "string.email": "Email must be valid"
-        }),
-
-    speciality: Joi.string()
-        .min(3)
-        .max(50)
-        .optional()
-        .messages({
-            "string.min": "Speciality must be at least 3 characters",
-            "string.max": "Speciality must be at most 50 characters"
-        }),
-
-    degree: Joi.string()
-        .min(3)
-        .max(50)
-        .optional()
-        .messages({
-            "string.min": "degree must be at least 3 characters",
-            "string.max": "degree must be at most 50 characters"
-        }),
-
-    experience: Joi.string()
-        .min(3)
-        .max(50)
-        .optional()
-        .messages({
-            "string.min": "experience must be at least 3 characters",
-            "string.max": "experience must be at most 50 characters"
-        }),
-
-    about: Joi.string()
-        .min(3)
-        .max(1000)
-        .optional()
-        .messages({
-            "string.min": "about field must be at least 3 characters",
-            "string.max": "about field must be at most 1000 characters"
-        }),
-
-    gender: Joi.string()
-        .optional()
-        .valid("male", "female")
-        .messages({
-            "any.valid": "Gender must be one of male or female",
-        }),
-
-    role: Joi.string()
-        .optional()
-        .valid("doctor")
-        .messages({
-            "any.valid": "Role must be doctor only",
-        }),
-
-    phone: Joi.string()
-        .optional()
-        .pattern(/^01([0-2]|5)[0-9]{8}$/),
-
     available: Joi.boolean()
         .optional()
         .default(true),
-
-    fees: Joi.number()
-        .optional(),
-
-    birth_date: Joi.date()
-        .optional(),
 
     active: Joi.boolean()
         .default(true)
@@ -211,17 +127,6 @@ const updateDoctorSchema = Joi.object({
         .optional(),
 
     docId: Joi.string().hex().length(24).optional(),
-
-    image: Joi.object({
-        fieldname: Joi.string().optional(),
-        originalname: Joi.string().optional(),
-        encoding: Joi.string().optional(),
-        mimetype: Joi.string().valid("image/png", "image/jpeg", "image/jpg", "image/webp").optional(),
-        destination: Joi.string().optional(),
-        filename: Joi.string().optional(),
-        path: Joi.string().optional(),
-        size: Joi.number().max(5242880).optional()
-    }).optional()
 }).options({ allowUnknown: false });
 
 const doctorIdSchema = Joi.object({
