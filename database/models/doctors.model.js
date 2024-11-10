@@ -119,8 +119,8 @@ doctorSchema.pre("findOneAndUpdate", async function (next) {
 })
 
 doctorSchema.pre("findOneAndDelete", async function (next) {
-    const docToUpdate = await Doctor.findOne(this.getQuery());
-    fs.unlink(`./uploads/doctors/${docToUpdate.profile.split("uploads/")[1]}`, (err) => {
+    const docToDelete = await Doctor.findOne(this.getQuery());
+    fs.unlink(`./uploads/doctors/${docToDelete.profile.split("uploads/")[1]}`, (err) => {
         if (err) {
             return next(new AppError("Can not find this profile image", 404))
         }

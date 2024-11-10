@@ -26,9 +26,15 @@ const getSprcificUser = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({user})
 })
 
+const deleteUser = errorAsyncHandler(async (req, res, next) => {
+    const user = await User.findOneAndDelete({_id: req.params.userId});
+    res.status(202).json({message: "User deleted successfully", user})
+})
+
 export {
     addUserManager,
     getAllManagers,
     getAllusers,
-    getSprcificUser
+    getSprcificUser,
+    deleteUser
 }

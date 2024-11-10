@@ -85,7 +85,7 @@ userSchema.pre("findOneAndUpdate", function (next) {
 
 userSchema.pre("findOneAndUpdate", async function (next) {
     if (this._update.profile) {
-        const docToUpdate = await Doctor.findOne(this.getQuery());
+        const docToUpdate = await User.findOne(this.getQuery());
 
         let folderPath;
         if (docToUpdate.role === "user") {
@@ -103,13 +103,14 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 })
 
 userSchema.pre("findOneAndDelete", async function (next) {
-    const docToUpdate = await Doctor.findOne(this.getQuery());
+    const docToDelete = await User.findOne(this.getQuery());
+console.log(docToDelete);
 
     let folderPath;
-    if (docToUpdate.role === "user") {
-        folderPath = `./uploads/users/${docToUpdate.profile.split("uploads/")[1]}`
+    if (docToDelete.role === "user") {
+        folderPath = `./uploads/users/${docToDelete.profile.split("uploads/")[1]}`
     } else {
-        folderPath = `./uploads/managers/${docToUpdate.profile.split("uploads/")[1]}`
+        folderPath = `./uploads/managers/${docToDelete.profile.split("uploads/")[1]}`
     }
     fs.unlinkSync(folderPath, (err) => {
         if (err) {
