@@ -9,6 +9,19 @@ const addUserManager = errorAsyncHandler(async (req, res, next) => {
     res.status(201).json({message: "Manager created successfully", user})
 })
 
+const getAllusers = errorAsyncHandler(async (req, res, next) => {    
+    const users = await User.find({role: "user"});
+    res.status(200).json({results: users.length, users})
+})
+const getAllManagers = errorAsyncHandler(async (req, res, next) => {    
+    const managers = await User.find({role: "manager"});
+    res.status(200).json({results: managers.length, managers})
+})
+
+
+
 export {
     addUserManager,
+    getAllManagers,
+    getAllusers,
 }

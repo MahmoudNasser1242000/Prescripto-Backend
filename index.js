@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json())
 app.use("/uploads", express.static("uploads/doctors"))
 app.use("/uploads", express.static("uploads/users"))
+app.use("/uploads", express.static("uploads/managers"))
 app.use(cors())
 
 dbconnection()
