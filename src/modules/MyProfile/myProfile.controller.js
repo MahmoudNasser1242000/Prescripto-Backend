@@ -15,6 +15,12 @@ const getMyProfile = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({profile})
 })
 
+const deleteProfile = errorAsyncHandler(async (req, res, next) => {
+    const profile = await User.findOneAndDelete({_id: req.user._id});
+    res.status(202).json({message: "Profile deleted successfully", profile})
+})
+
 export {
-    getMyProfile
+    getMyProfile,
+    deleteProfile
 }
