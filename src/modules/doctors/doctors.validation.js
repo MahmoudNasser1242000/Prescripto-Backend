@@ -101,6 +101,14 @@ const addDoctorSchema = Joi.object({
     birth_date: Joi.date()
         .required(),
 
+    active: Joi.boolean()
+        .default(true)
+        .optional(),
+
+    activeExpire: Joi.date()
+        .default("0000-01-01T00:00:00Z")
+        .optional(),
+
     image: Joi.object({
         fieldname: Joi.string().required(),
         originalname: Joi.string().required(),
@@ -192,6 +200,14 @@ const updateDoctorSchema = Joi.object({
         .optional(),
 
     birth_date: Joi.date()
+        .optional(),
+
+    active: Joi.boolean()
+        .default(true)
+        .optional(),
+
+    activeExpire: Joi.date()
+        .default("0000-01-01T00:00:00Z")
         .optional(),
 
     docId: Joi.string().hex().length(24).optional(),
