@@ -18,19 +18,19 @@ const getAllAppointments = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({results: appointments.length, appointments})
 })
 
-const getAppointmentsForSpecificUser = errorAsyncHandler(async (req, res, next) => {    
-    const appointments = await Appointment.find({user: req.params.userId});
-    res.status(200).json({results: appointments.length, appointments})
-})
-
 const getSpecificAppointment = errorAsyncHandler(async (req, res, next) => {    
     const appointment = await Appointment.findOne({_id: req.params.appointmentId});
     res.status(200).json({appointment})
 })
 
+const deleteAppointment = errorAsyncHandler(async (req, res, next) => {    
+    const appointment = await Appointment.findOneAndDelete({_id: req.params.appointmentId});
+    res.status(200).json({message: "Appointment deleted successfully", appointment})
+})
+
 export {
     addappointment,
     getAllAppointments,
-    getAppointmentsForSpecificUser,
-    getSpecificAppointment
+    getSpecificAppointment,
+    deleteAppointment
 }
