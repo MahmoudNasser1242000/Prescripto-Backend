@@ -7,10 +7,13 @@ import schemaValidation from "../../../services/validationSchema.js";
 import { addDoctorSchema, doctorIdSchema, updateDoctorSchema } from "./doctors.validation.js";
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import roleAccess from "../../middlewares/roleAccess.js";
+import appointmentRouter from "../appointments/appointments.routes.js";
 
-const doctorRouter = Router();
+const doctorRouter = Router({mergeParams: true});
 
 doctorRouter.use(protectAuth)
+
+doctorRouter.use("/:docId/appointments", roleAccess("manager", "doctor"), checkDoctorId, appointmentRouter)
 
 doctorRouter.route("/")
     .post(roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)

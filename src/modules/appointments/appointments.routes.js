@@ -1,19 +1,21 @@
 import { Router } from "express"
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import roleAccess from "../../middlewares/roleAccess.js";
-import { addappointment, getAllAppointments, getAppointmentsForSpecificUser } from "./appointments.controller.js";
+import { addappointment, getAllAppointments, getSpecificAppointment } from "./appointments.controller.js";
 import checkDoctorId from "../../middlewares/checkDoctorId.js";
 import checkUserId from "../../middlewares/checkUserId.js";
+import checkAppointmentId from "../../middlewares/checkAppointmentId.js";
+import checkAppointmentCreated from "../../middlewares/checkAppointmentCreated.js";
 
-const appointmentRouter = Router();
+const appointmentRouter = Router({mergeParams: true});
 
 appointmentRouter.use(protectAuth)
 
 appointmentRouter.route("/")
-    .post(roleAccess("user"), checkDoctorId, checkUserId, addappointment)
+    .post(roleAccess("user"), checkDoctorId, checkUserId, checkAppointmentCreated, addappointment)
     .get(roleAccess("manager"), getAllAppointments)
 
-appointmentRouter.route("/:userId")
-    .get(roleAccess("manager"), checkUserId, getAppointmentsForSpecificUser)
+appointmentRouter.route("/:appointmentId")
+    .get(roleAccess("manager"), checkAppointmentId, getSpecificAppointment)
 
 export default appointmentRouter;

@@ -8,11 +8,13 @@ import filesUpload from "../../../services/filesUpload.js";
 import checkUserId from "../../middlewares/checkUserId.js";
 import schemaValidation from "../../../services/validationSchema.js";
 import { addUserSchema, updateUserSchema, userIdSchema } from "./users.validation.js";
-import UpdateUserActivity from "../../../utils/UpdateUserActivity.js";
+import appointmentRouter from "../appointments/appointments.routes.js";
 
 const userRouter = Router();
 
 userRouter.use(protectAuth)
+
+userRouter.use("/:userId/appointments", roleAccess("manager", "user"), checkUserId, appointmentRouter)
 
 userRouter.get("/getAllManagers", roleAccess("manager"), getAllManagers)
 
