@@ -25,12 +25,18 @@ const getSpecificAppointment = errorAsyncHandler(async (req, res, next) => {
 
 const deleteAppointment = errorAsyncHandler(async (req, res, next) => {    
     const appointment = await Appointment.findOneAndDelete({_id: req.params.appointmentId});
-    res.status(200).json({message: "Appointment deleted successfully", appointment})
+    res.status(202).json({message: "Appointment deleted successfully", appointment})
+})
+
+const upadteAppointment = errorAsyncHandler(async (req, res, next) => {    
+    const appointment = await Appointment.findOneAndUpdate({_id: req.params.appointmentId}, req.body, {new: true});
+    res.status(202).json({message: "Appointment updated successfully", appointment})
 })
 
 export {
     addappointment,
     getAllAppointments,
     getSpecificAppointment,
-    deleteAppointment
+    deleteAppointment,
+    upadteAppointment
 }
