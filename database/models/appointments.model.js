@@ -7,6 +7,10 @@ const appointmentSchema = new Schema({
         type: Date,
         required: true
     },
+    expireDate: {
+        type: Date,
+        required: true
+    },
     doctor: {
         type: Schema.Types.ObjectId, 
         ref: "Doctor",

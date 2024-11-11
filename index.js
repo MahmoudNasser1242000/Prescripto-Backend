@@ -5,6 +5,7 @@ import globalErrorMiddleware from './services/globalErrorMiddlewareFunc.js';
 import AppError from './utils/AppErrorClass.js';
 import Bootstrap from './src/Bootstrap.js';
 import UpdateUserActivity from './utils/UpdateUserActivity.js';
+import deleteExpireAppointments from './utils/deleteExpireAppointments.js';
 
 const app = express();
 app.use(express.json())
@@ -13,6 +14,7 @@ app.use("/uploads", express.static("uploads/users"))
 app.use("/uploads", express.static("uploads/managers"))
 app.use(cors())
 app.use(UpdateUserActivity)
+app.use(deleteExpireAppointments)
 
 dbconnection()
 Bootstrap(app)
