@@ -7,6 +7,12 @@ const addappointment = errorAsyncHandler(async (req, res, next) => {
     res.status(201).json({message: "Appointment created successfully", appointment})
 })
 
+const getAllAppointments = errorAsyncHandler(async (req, res, next) => {    
+    const appointments = await Appointment.find();
+    res.status(200).json({results: appointments.length, appointments})
+})
+
 export {
     addappointment,
+    getAllAppointments
 }
