@@ -15,10 +15,20 @@ const protectAuth = async (req, res, next) => {
     const decodeToken = jwt.verify(token, "Login System");
 
     if (decodeToken.role === "doctor") {
-        const doctor = await Doctor.findOne({_id: decodeToken.docId})
+        const doctor = await Doctor.findOne({_id: decodeToken.docId});
+        if (!doctor) 
+            return next(new AppError("Invalid doctor token", 400));
+
+        if (doctor.changePasswordAt && decodeToken.iat < Math.round(doctor.changePasswordAt.getTime()/1000))             
+            return next(new AppError("Invalid doctor token", 400));
         req.doctor = doctor
     } else {
-        const user = await User.findOne({_id: decodeToken.userId})
+        const user = await User.findOne({_id: decodeToken.userId});
+        if (!user) 
+            return next(new AppError("Invalid user token", 400));
+
+        if (user.changePasswordAt && decodeToken.iat < Math.round(user.changePasswordAt.getTime()/1000)) 
+            return next(new AppError("Invalid user token", 400));
         req.user = user
     }
     next()

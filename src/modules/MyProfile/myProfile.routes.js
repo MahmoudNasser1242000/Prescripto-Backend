@@ -1,19 +1,22 @@
 import {Router} from "express"
-import { deleteMyProfile, getMyProfile, updateMyDoctorProfile, updateMyManagerProfile, updateMyUserProfile } from "./myProfile.controller.js";
+import { changeDoctorPassword, changeUserPassword, deleteMyProfile, getMyProfile, updateMyDoctorProfile, updateMyManagerProfile, updateMyUserProfile } from "./myProfile.controller.js";
 import roleAccess from "../../middlewares/roleAccess.js";
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import filesUpload from "../../../services/filesUpload.js";
 import schemaValidation from "../../../services/validationSchema.js";
-import { updateDoctorProfileSchema, updateUserORMmanagerProfileSchema } from "./myProfile.validation.js";
+import { chanagePasswordSchema, updateDoctorProfileSchema, updateUserORMmanagerProfileSchema } from "./myProfile.validation.js";
 
 const myProfileRouter = Router();
 
 myProfileRouter.use(protectAuth)
 
 myProfileRouter.patch("/updateDoctorProfile", roleAccess("doctor"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorProfileSchema), updateMyDoctorProfile)
-myProfileRouter.patch("/updateUserProfile", roleAccess("user"), filesUpload("doctors").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyUserProfile)
-myProfileRouter.patch("/updateManagerProfile", roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyManagerProfile)
+myProfileRouter.patch("/updateUserProfile", roleAccess("user"), filesUpload("users").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyUserProfile)
+myProfileRouter.patch("/updateManagerProfile", roleAccess("super-manager", "manager"), filesUpload("managers").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyManagerProfile)
     
+myProfileRouter.patch("/changeDoctorPassword", roleAccess("doctor"), schemaValidation(chanagePasswordSchema), changeDoctorPassword)
+myProfileRouter.patch("/changeUserPassword", roleAccess("super-manager", "manager", "user"), schemaValidation(chanagePasswordSchema), changeUserPassword)
+
 myProfileRouter.route("/")
     .get(getMyProfile)
     .delete(roleAccess("user"), deleteMyProfile)

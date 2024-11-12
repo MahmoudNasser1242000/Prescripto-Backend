@@ -144,7 +144,42 @@ const updateDoctorProfileSchema = Joi.object({
     }).optional()
 }).options({ allowUnknown: false });
 
+const chanagePasswordSchema = Joi.object({
+    password: Joi.string()
+        .required()
+        .min(6)
+        .max(50)
+        .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
+        .messages({
+            "string.pattern": `Password must contains at least 3 numbers,
+            2 characters one of them must be uppercase 
+            and one special character`,
+            "string.min": "Password must be 6 to 50 characters",
+            "string.max": "Password must be 6 to 50 characters"
+        }),
+
+    newPassword: Joi.string()
+        .required()
+        .min(6)
+        .max(50)
+        .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
+        .messages({
+            "string.pattern": `Password must contains at least 3 numbers,
+            2 characters one of them must be uppercase 
+            and one special character`,
+            "string.min": "Password must be 6 to 50 characters",
+            "string.max": "Password must be 6 to 50 characters"
+        }),
+
+    repassword: Joi.string()
+        .required()
+        .valid(Joi.ref('newPassword'))
+        .messages({
+            "any.valid": "Password and repassword must be matched",
+        }),
+}).options({ allowUnknown: false });
 export {
     updateUserORMmanagerProfileSchema,
-    updateDoctorProfileSchema
+    updateDoctorProfileSchema,
+    chanagePasswordSchema
 }

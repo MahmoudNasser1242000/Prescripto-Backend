@@ -25,6 +25,9 @@ const doctorSchema = new Schema({
         required: true,
         trim: true,
     },
+    changePasswordAt: {
+        type: Date
+    },
     profile: {
         type: String,
         trim: true,
