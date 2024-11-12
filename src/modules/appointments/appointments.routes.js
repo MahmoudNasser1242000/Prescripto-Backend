@@ -6,18 +6,20 @@ import checkDoctorId from "../../middlewares/checkDoctorId.js";
 import checkUserId from "../../middlewares/checkUserId.js";
 import checkAppointmentId from "../../middlewares/checkAppointmentId.js";
 import checkAppointmentCreated from "../../middlewares/checkAppointmentCreated.js";
+import schemaValidation from "../../../services/validationSchema.js";
+import { addAppointmentSchema, appointmentIdSchema, updateAppointmentSchema } from "./appointment.validation.js";
 
 const appointmentRouter = Router({mergeParams: true});
 
 appointmentRouter.use(protectAuth)
 
 appointmentRouter.route("/")
-    .post(roleAccess("user"), checkDoctorId, checkUserId, checkAppointmentCreated, addappointment)
+    .post(roleAccess("user"), schemaValidation(addAppointmentSchema), checkDoctorId, checkUserId, checkAppointmentCreated, addappointment)
     .get(roleAccess("manager"), getAllAppointments)
 
 appointmentRouter.route("/:appointmentId")
-    .get(roleAccess("manager"), checkAppointmentId, getSpecificAppointment)
-    .delete(checkAppointmentId, deleteAppointment)
-    .patch(roleAccess("user"), checkAppointmentId, upadteAppointment)
+    .get(roleAccess("manager"), schemaValidation(appointmentIdSchema),  checkAppointmentId, getSpecificAppointment)
+    .delete(schemaValidation(appointmentIdSchema), checkAppointmentId, deleteAppointment)
+    .patch(roleAccess("user"), schemaValidation(updateAppointmentSchema),  checkAppointmentId, upadteAppointment)
 
 export default appointmentRouter;

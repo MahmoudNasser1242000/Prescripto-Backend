@@ -14,7 +14,7 @@ const userRouter = Router();
 
 userRouter.use(protectAuth)
 
-userRouter.use("/:userId/appointments", roleAccess("manager", "user"), checkUserId, appointmentRouter)
+userRouter.use("/:userId/appointments", roleAccess("manager", "user"), schemaValidation(userIdSchema), checkUserId, appointmentRouter)
 
 userRouter.get("/getAllManagers", roleAccess("manager"), getAllManagers)
 

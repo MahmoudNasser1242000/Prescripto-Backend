@@ -13,7 +13,7 @@ const doctorRouter = Router({mergeParams: true});
 
 doctorRouter.use(protectAuth)
 
-doctorRouter.use("/:docId/appointments", roleAccess("manager", "doctor"), checkDoctorId, appointmentRouter)
+doctorRouter.use("/:docId/appointments", roleAccess("manager", "doctor"), schemaValidation(doctorIdSchema), checkDoctorId, appointmentRouter)
 
 doctorRouter.route("/")
     .post(roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)

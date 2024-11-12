@@ -126,5 +126,16 @@ userSchema.pre("findOneAndDelete", async function (next) {
     next()
 })
 
+userSchema.pre(/^find/, function (next) {
+    this.populate("appointments")
+    next()
+})
+
+userSchema.virtual("appointments", { // name of new field in doctor schema
+    ref: "Appointment", // Appointment model
+    localField: "_id", // doctor id
+    foreignField: "user", // appointment field ref to doctor
+});
+
 const User = mongoose.model('User', userSchema);
 export default User;

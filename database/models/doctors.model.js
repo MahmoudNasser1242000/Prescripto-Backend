@@ -94,7 +94,7 @@ const doctorSchema = new Schema({
         type: Date,
         required: true
     },
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 doctorSchema.post("init", (doc) => {
     doc.profile = `http://localhost:3000/uploads/${doc.profile}`
@@ -135,6 +135,17 @@ doctorSchema.pre("findOneAndDelete", async function (next) {
     })
     next()
 })
+
+doctorSchema.pre(/^find/, function (next) {
+    this.populate("appointments")
+    next()
+})
+
+doctorSchema.virtual("appointments", { // name of new field in doctor schema
+    ref: "Appointment", // Appointment model
+    localField: "_id", // doctor id
+    foreignField: "doctor", // appointment field ref to doctor
+});
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
 export default Doctor;
