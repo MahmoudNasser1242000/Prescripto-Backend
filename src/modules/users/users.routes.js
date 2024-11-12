@@ -9,22 +9,23 @@ import checkUserId from "../../middlewares/checkUserId.js";
 import schemaValidation from "../../../services/validationSchema.js";
 import { addUserSchema, updateUserSchema, userIdSchema } from "./users.validation.js";
 import appointmentRouter from "../appointments/appointments.routes.js";
+import protectSuperManager from "../../middlewares/protectSuperManager.js";
 
 const userRouter = Router();
 
 userRouter.use(protectAuth)
 
-userRouter.use("/:userId/appointments", roleAccess("manager", "user"), schemaValidation(userIdSchema), checkUserId, appointmentRouter)
+userRouter.use("/:userId/appointments", roleAccess("super-manager", "manager"), schemaValidation(userIdSchema), checkUserId, appointmentRouter)
 
-userRouter.get("/getAllManagers", roleAccess("manager"), getAllManagers)
+userRouter.get("/getAllManagers", roleAccess("super-manager", "manager"), getAllManagers)
 
 userRouter.route("/")
-    .post(roleAccess("manager"), filesUpload("managers").single("image"), schemaValidation(addUserSchema), checkUserEmail, checkDoctorEmail, addUserManager)
-    .get(roleAccess("manager"), getAllusers)
+    .post(roleAccess("super-manager", "manager"), filesUpload("managers").single("image"), schemaValidation(addUserSchema), checkUserEmail, checkDoctorEmail, addUserManager)
+    .get(roleAccess("super-manager", "manager"), getAllusers)
 
 userRouter.route("/:userId")
-    .get(roleAccess("manager", "doctor"), schemaValidation(userIdSchema), checkUserId, getSpecificUser)
-    .delete(roleAccess("manager"), schemaValidation(userIdSchema), checkUserId, deleteUser)
-    .patch(roleAccess("manager"), schemaValidation(updateUserSchema), checkUserId, updateUser)
+    .get(roleAccess("super-manager", "manager", "doctor"), schemaValidation(userIdSchema), checkUserId, getSpecificUser)
+    .delete(roleAccess("super-manager", "manager"), schemaValidation(userIdSchema), checkUserId, protectSuperManager, deleteUser)
+    .patch(roleAccess("super-manager", "manager"), schemaValidation(updateUserSchema), checkUserId, protectSuperManager, updateUser)
     
 export default userRouter;

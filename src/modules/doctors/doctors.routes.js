@@ -13,15 +13,15 @@ const doctorRouter = Router({mergeParams: true});
 
 doctorRouter.use(protectAuth)
 
-doctorRouter.use("/:docId/appointments", roleAccess("manager", "doctor"), schemaValidation(doctorIdSchema), checkDoctorId, appointmentRouter)
+doctorRouter.use("/:docId/appointments", roleAccess("super-manager", "manager"), schemaValidation(doctorIdSchema), checkDoctorId, appointmentRouter)
 
 doctorRouter.route("/")
-    .post(roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
+    .post(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
     .get(protectAuth, getAllDoctors)
 
 doctorRouter.route("/:docId")
-    .patch(roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
-    .delete(roleAccess("manager"), schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
+    .patch(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
+    .delete(roleAccess("super-manager", "manager"), schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
     .get(schemaValidation(doctorIdSchema), checkDoctorId, getSpecificDoctor)
 
 export default doctorRouter;

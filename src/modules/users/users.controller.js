@@ -19,7 +19,7 @@ const getAllusers = errorAsyncHandler(async (req, res, next) => {
     res.status(200).json({results: users.length, users})
 })
 const getAllManagers = errorAsyncHandler(async (req, res, next) => {    
-    const managers = await User.find({role: "manager"});
+    const managers = await User.find({role: {$in: ["manager", "super-manager"]}});
     res.status(200).json({results: managers.length, managers})
 })
 

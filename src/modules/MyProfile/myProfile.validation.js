@@ -29,6 +29,7 @@ const updateUserORMmanagerProfileSchema = Joi.object({
     gender: Joi.string()
         .optional()
         .valid("male", "female")
+        .default("male")
         .messages({
             "any.valid": "Gender must be one of male or female",
         }),

@@ -15,10 +15,10 @@ appointmentRouter.use(protectAuth)
 
 appointmentRouter.route("/")
     .post(roleAccess("user"), schemaValidation(addAppointmentSchema), checkDoctorId, checkUserId, checkAppointmentCreated, addappointment)
-    .get(roleAccess("manager"), getAllAppointments)
+    .get(roleAccess("super-manager", "manager"), getAllAppointments)
 
 appointmentRouter.route("/:appointmentId")
-    .get(roleAccess("manager"), schemaValidation(appointmentIdSchema),  checkAppointmentId, getSpecificAppointment)
+    .get(roleAccess("super-manager", "manager"), schemaValidation(appointmentIdSchema),  checkAppointmentId, getSpecificAppointment)
     .delete(schemaValidation(appointmentIdSchema), checkAppointmentId, deleteAppointment)
     .patch(roleAccess("user"), schemaValidation(updateAppointmentSchema),  checkAppointmentId, upadteAppointment)
 

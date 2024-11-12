@@ -1,5 +1,4 @@
 import {Router} from "express"
-import UpdateUserActivity from "../../../utils/UpdateUserActivity.js";
 import { deleteMyProfile, getMyProfile, updateMyDoctorProfile, updateMyManagerProfile, updateMyUserProfile } from "./myProfile.controller.js";
 import roleAccess from "../../middlewares/roleAccess.js";
 import protectAuth from "../../middlewares/ProtectAuth.js";
@@ -13,7 +12,7 @@ myProfileRouter.use(protectAuth)
 
 myProfileRouter.patch("/updateDoctorProfile", roleAccess("doctor"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorProfileSchema), updateMyDoctorProfile)
 myProfileRouter.patch("/updateUserProfile", roleAccess("user"), filesUpload("doctors").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyUserProfile)
-myProfileRouter.patch("/updateManagerProfile", roleAccess("manager"), filesUpload("doctors").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyManagerProfile)
+myProfileRouter.patch("/updateManagerProfile", roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(updateUserORMmanagerProfileSchema), updateMyManagerProfile)
     
 myProfileRouter.route("/")
     .get(getMyProfile)

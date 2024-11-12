@@ -41,7 +41,7 @@ const userSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ["manager", "user"],
+        enum: ["super-manager", "manager", "user"],
         default: "user"
     },
     birth_date: {
