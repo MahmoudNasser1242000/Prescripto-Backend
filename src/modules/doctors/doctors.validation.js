@@ -73,6 +73,8 @@ const addDoctorSchema = Joi.object({
             "string.max": "about field must be at most 1000 characters"
         }),
 
+    examination_dates: Joi.optional(),
+
     gender: Joi.string()
         .optional()
         .valid("male", "female")
@@ -111,7 +113,7 @@ const addDoctorSchema = Joi.object({
         path: Joi.string().required(),
         size: Joi.number().max(5242880).required()
     }).required()
-}).options({ allowUnknown: false });
+})
 
 const updateDoctorSchema = Joi.object({
     available: Joi.boolean()

@@ -61,6 +61,15 @@ const doctorSchema = new Schema({
         minLength: [3, "About must be at least 3 characters"],
         maxLength: [1000, "About must be at most 1000 characters"],
     },
+    examination_dates: {
+        type: [{
+            time: String,
+            modifier: {
+                type: String,
+                enum: ["PM", "AM"]
+            },
+        }],
+    },
     gender: {
         type: String,
         trim: true,
