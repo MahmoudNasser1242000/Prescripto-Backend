@@ -2,6 +2,22 @@ import Doctor from "../../../database/models/doctors.model.js";
 import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
 import AppError from "../../../utils/AppErrorClass.js";
 
+const addExaminationDate = errorAsyncHandler(async (req, res, next) => {   
+    const {docId} = req.params
+    const doctorExist = await Doctor.findOne({_id: docId});
+    if (!doctorExist)
+        return next(new AppError("Can not find doctor with this id", 404));
+
+    const doctor = await Doctor.findOneAndUpdate(
+        { _id: doctorExist._id },
+        {
+            $addToSet: { examination_dates: req.body },
+        },
+        { new: true }
+    )
+    res.status(201).json({message: "Examination date created successfully", doctor})
+});
+
 const updateExaminationDate = errorAsyncHandler(async (req, res, next) => {   
     const {docId, timeId} = req.params
     const doctor = await Doctor.findOne({_id: docId});
@@ -39,6 +55,7 @@ const removeExaminationDate = errorAsyncHandler(async (req, res, next) => {
 })
 
 export {
+    addExaminationDate,
     updateExaminationDate,
     removeExaminationDate
 

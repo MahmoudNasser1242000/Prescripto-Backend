@@ -1,16 +1,18 @@
 import {Router} from "express"
-import { removeExaminationDate, updateExaminationDate } from "./examinationDates.controller.js";
+import { addExaminationDate, removeExaminationDate, updateExaminationDate } from "./examinationDates.controller.js";
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import roleAccess from "../../middlewares/roleAccess.js";
 import schemaValidation from "../../../services/validationSchema.js";
-import { deleteExaminationDatesIdSchema, updateExaminationDatesIdSchema } from "./examinationDates.validation.js";
+import { addExaminationDatesIdSchema, deleteExaminationDatesIdSchema, updateExaminationDatesIdSchema } from "./examinationDates.validation.js";
 
 const examinationDatesRouter = Router();
 
 examinationDatesRouter.use(protectAuth)
 
-examinationDatesRouter.patch("/updateExaminationDate/:docId/:timeId", roleAccess("super-manager", "manager"), schemaValidation(updateExaminationDatesIdSchema), updateExaminationDate)
+examinationDatesRouter.post("/:docId", roleAccess("super-manager", "manager"), schemaValidation(addExaminationDatesIdSchema), addExaminationDate)
 
-examinationDatesRouter.delete("/removeExaminationDate/:docId/:timeId", roleAccess("super-manager", "manager"), schemaValidation(deleteExaminationDatesIdSchema), removeExaminationDate)
+examinationDatesRouter.patch("/:docId/:timeId", roleAccess("super-manager", "manager"), schemaValidation(updateExaminationDatesIdSchema), updateExaminationDate)
+
+examinationDatesRouter.delete("/:docId/:timeId", roleAccess("super-manager", "manager"), schemaValidation(deleteExaminationDatesIdSchema), removeExaminationDate)
 
 export default examinationDatesRouter;
