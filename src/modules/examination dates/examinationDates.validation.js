@@ -19,6 +19,12 @@ const updateExaminationDatesIdSchema = Joi.object({
     timeId: Joi.string().hex().length(24).optional(),
 }).options({ allowUnknown: false });
 
+const deleteExaminationDatesIdSchema = Joi.object({
+    docId: Joi.string().hex().length(24).optional(),
+    timeId: Joi.string().hex().length(24).optional(),
+}).options({ allowUnknown: false });
+
 export {
-    updateExaminationDatesIdSchema
+    updateExaminationDatesIdSchema,
+    deleteExaminationDatesIdSchema
 }
