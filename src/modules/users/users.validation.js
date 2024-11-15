@@ -86,14 +86,14 @@ const addUserSchema = Joi.object({
         .optional(),
 
     image: Joi.object({
-        fieldname: Joi.string().optional(),
-        originalname: Joi.string().optional(),
-        encoding: Joi.string().optional(),
-        mimetype: Joi.string().valid("image/png", "image/jpeg", "image/jpg", "image/webp").optional(),
-        destination: Joi.string().optional(),
-        filename: Joi.string().optional(),
-        path: Joi.string().optional(),
-        size: Joi.number().max(5242880).optional()
+        fieldname: Joi.string().required(),
+        originalname: Joi.string().required(),
+        encoding: Joi.string().required(),
+        mimetype: Joi.string().valid("image/png", "image/jpeg", "image/jpg", "image/webp").required(),
+        destination: Joi.string().required(),
+        filename: Joi.string().required(),
+        path: Joi.string().required(),
+        size: Joi.number().max(5242880).required()
     }).optional()
 }).options({ allowUnknown: false });
 
