@@ -23,7 +23,7 @@ const signupSchema = Joi.object({
         .max(50)
         .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
         .messages({
-            "string.pattern": `Password must contains at least 3 numbers,
+            "string.pattern.base": `Password must contains at least 3 numbers,
             2 characters one of them must be uppercase 
             and one special character`,
             "string.min": "Password must be 6 to 50 characters",
@@ -72,7 +72,7 @@ const signupSchema = Joi.object({
     job: Joi.string()
         .min(3)
         .max(100)
-        .required()
+        .optional()
         .messages({
             "string.min": "Job field must be at least 3 characters",
             "string.max": "Job field must be at most 100 characters"
@@ -112,7 +112,7 @@ const signinSchema = Joi.object({
         .max(50)
         .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
         .messages({
-            "string.pattern": `Password must contains at least 3 numbers,
+            "string.pattern.base": `Password must contains at least 3 numbers,
             2 characters one of them must be uppercase 
             and one special character`,
             "string.min": "Password must be 6 to 50 characters",

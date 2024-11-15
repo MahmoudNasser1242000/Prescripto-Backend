@@ -5,7 +5,7 @@ const addExaminationDatesIdSchema = Joi.object({
         .required()
         .pattern(/^(0[1-9]|10|11|12):([0-5][0-9])$/)
         .messages({
-            "string.pattern": `Time must be valid, For example: 02:00`
+            "string.pattern.base": `Time must be valid, For example: 02:00`
         }),
     modifier: Joi.string()
         .required()
@@ -22,7 +22,7 @@ const updateExaminationDatesIdSchema = Joi.object({
             .required()
             .pattern(/^(0[1-9]|10|11|12):([0-5][0-9])$/)
             .messages({
-                "string.pattern": `Time must be valid, For example: 02:00`,
+                "string.pattern.base": `Time must be valid, For example: 02:00`,
             }),
         modifier: Joi.string()
             .required()

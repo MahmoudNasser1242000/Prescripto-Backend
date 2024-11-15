@@ -151,7 +151,7 @@ const chanagePasswordSchema = Joi.object({
         .max(50)
         .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
         .messages({
-            "string.pattern": `Password must contains at least 3 numbers,
+            "string.pattern.base": `Password must contains at least 3 numbers,
             2 characters one of them must be uppercase 
             and one special character`,
             "string.min": "Password must be 6 to 50 characters",
@@ -164,7 +164,7 @@ const chanagePasswordSchema = Joi.object({
         .max(50)
         .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
         .messages({
-            "string.pattern": `Password must contains at least 3 numbers,
+            "string.pattern.base": `Password must contains at least 3 numbers,
             2 characters one of them must be uppercase 
             and one special character`,
             "string.min": "Password must be 6 to 50 characters",
