@@ -40,7 +40,8 @@ const signupSchema = Joi.object({
     bio: Joi.string()
         .min(3)
         .max(1000)
-        .required()
+        .optional()
+        .allow(null, "")
         .messages({
             "string.min": "bio field must be at least 3 characters",
             "string.max": "bio field must be at most 1000 characters"

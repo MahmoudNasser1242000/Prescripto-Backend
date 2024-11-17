@@ -73,7 +73,30 @@ const addDoctorSchema = Joi.object({
             "string.max": "about field must be at most 1000 characters"
         }),
 
-    examination_dates: Joi.optional(),
+    examination_dates: Joi.array()
+        .items(Joi.object({
+            time: Joi.string()
+                .required()
+                .pattern(/^(0[1-9]|10|11|12):([0-5][0-9])$/)
+                .messages({
+                    "string.pattern.base": `Time must be valid, For example: 02:00`
+                }),
+            modifier: Joi.string()
+                .required()
+                .valid("PM", "AM")
+                .messages({
+                    "any.valid": "Modifier must be one of PM or AM",
+                }),
+        }))
+        .unique()
+        .min(1)
+        .max(8)
+        .required()
+        .messages({
+            "array.min": "Examination dates length must be at least 3 items",
+            "array.max": "Examination dates length must be at most 50 items",
+            "array.unique": "Examination dates must be unique"
+        }),
 
     gender: Joi.string()
         .optional()

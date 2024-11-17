@@ -3,7 +3,6 @@ import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
 
 const addDoctor = errorAsyncHandler(async (req, res, next) => {    
     if (req.file) req.body.profile = req.file.filename;
-    req.body.examination_dates = req.body.examination_dates.map((time) => JSON.parse(time))
     const doctorModel = new Doctor(req.body);
     const doctor = await doctorModel.save()
     res.status(201).json({message: "Doctor created successfully", doctor})
