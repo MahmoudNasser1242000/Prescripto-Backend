@@ -9,11 +9,21 @@ const addDoctor = errorAsyncHandler(async (req, res, next) => {
 })
 
 const getAllDoctors = errorAsyncHandler(async (req, res, next) => {    
-    const doctors = await Doctor.find();
+    const {name} = req.query
+    const filterObj = {}
+    if (name) {
+        filterObj.name = {
+            $regex: new RegExp(
+                name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"),
+                "i"
+            ),
+        };
+    }
+    const doctors = await Doctor.find(filterObj);
     res.status(200).json({results: doctors.length, doctors})
 })
 
-const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {    
+const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {
     const doctor = await Doctor.findById(req.params.docId);
     res.status(200).json({doctor})
 })

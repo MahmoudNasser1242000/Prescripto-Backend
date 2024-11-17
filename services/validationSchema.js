@@ -2,7 +2,9 @@ import AppError from "../utils/AppErrorClass.js";
 
 const schemaValidation = (schema) => {
     return (req, res, next) => {
-        req.body.examination_dates = req.body.examination_dates.map((time) => JSON.parse(time))
+        if (req.body.examination_dates) {
+            req.body.examination_dates = req.body.examination_dates.map((time) => JSON.parse(time))
+        }
         
         let inputData;
         if (req.file) {

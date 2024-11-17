@@ -4,7 +4,7 @@ import checkDoctorEmail from "../../middlewares/checkDoctorEmail.js";
 import filesUpload from "../../../services/filesUpload.js";
 import checkDoctorId from "../../middlewares/checkDoctorId.js";
 import schemaValidation from "../../../services/validationSchema.js";
-import { addDoctorSchema, doctorIdSchema, updateDoctorSchema } from "./doctors.validation.js";
+import { addDoctorSchema, doctorIdSchema, getDoctorSchema, updateDoctorSchema } from "./doctors.validation.js";
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import roleAccess from "../../middlewares/roleAccess.js";
 import appointmentRouter from "../appointments/appointments.routes.js";
@@ -17,7 +17,7 @@ doctorRouter.use("/:docId/appointments", roleAccess("super-manager", "manager"),
 
 doctorRouter.route("/")
     .post(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
-    .get(protectAuth, getAllDoctors)
+    .get(protectAuth, schemaValidation(getDoctorSchema), getAllDoctors)
 
 doctorRouter.route("/:docId")
     .patch(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)

@@ -14,12 +14,32 @@ const addUserManager = errorAsyncHandler(async (req, res, next) => {
     res.status(201).json({message: "Manager created successfully", user})
 })
 
-const getAllusers = errorAsyncHandler(async (req, res, next) => {    
-    const users = await User.find({role: "user"});
+const getAllusers = errorAsyncHandler(async (req, res, next) => {   
+    const {name} = req.query
+    const filterObj = {role: "user"}
+    if (name) {
+        filterObj.name = {
+            $regex: new RegExp(
+                name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"),
+                "i"
+            ),
+        };
+    }
+    const users = await User.find(filterObj);
     res.status(200).json({results: users.length, users})
 })
-const getAllManagers = errorAsyncHandler(async (req, res, next) => {    
-    const managers = await User.find({role: {$in: ["manager", "super-manager"]}});
+const getAllManagers = errorAsyncHandler(async (req, res, next) => {  
+    const {name} = req.query
+    const filterObj = {role: {$in: ["manager", "super-manager"]}}
+    if (name) {
+        filterObj.name = {
+            $regex: new RegExp(
+                name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"),
+                "i"
+            ),
+        };
+    }  
+    const managers = await User.find(filterObj);
     res.status(200).json({results: managers.length, managers})
 })
 

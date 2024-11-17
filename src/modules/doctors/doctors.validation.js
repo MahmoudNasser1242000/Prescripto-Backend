@@ -154,6 +154,12 @@ const updateDoctorSchema = Joi.object({
     docId: Joi.string().hex().length(24).optional(),
 }).options({ allowUnknown: false });
 
+const getDoctorSchema = Joi.object({
+    name: Joi.string()
+        .allow("")
+        .optional(),
+}).options({ allowUnknown: false });
+
 const doctorIdSchema = Joi.object({
     docId: Joi.string().hex().length(24).optional(),
 }).options({ allowUnknown: false });
@@ -161,5 +167,6 @@ const doctorIdSchema = Joi.object({
 export {
     addDoctorSchema,
     updateDoctorSchema,
-    doctorIdSchema
+    doctorIdSchema,
+    getDoctorSchema
 }
