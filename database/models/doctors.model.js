@@ -109,7 +109,9 @@ const doctorSchema = new Schema({
 }, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 doctorSchema.post("init", (doc) => {
-    doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+    if (doc.profile) {
+        doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+    }
 })
 
 doctorSchema.pre("save", function (next) {

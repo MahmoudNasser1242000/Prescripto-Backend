@@ -73,10 +73,12 @@ const userSchema = new Schema({
         minLength: [3, "Bio must be at least 3 characters"],
         maxLength: [1000, "Bio name must be at most 1000 characters"],
     }
-}, { timestamps: true });
+}, { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } });
 
 userSchema.post("init", (doc) => {
-    doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+    if (doc.profile) {
+        doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+    }
 })
 
 userSchema.pre("save", function (next) {
@@ -129,16 +131,16 @@ userSchema.pre("findOneAndDelete", async function (next) {
     next()
 })
 
-userSchema.pre(/^find/, function (next) {
-    this.populate("appointments")
-    next()
-})
-
 userSchema.virtual("appointments", { // name of new field in doctor schema
     ref: "Appointment", // Appointment model
     localField: "_id", // doctor id
     foreignField: "user", // appointment field ref to doctor
 });
+
+userSchema.pre(/^find/, function (next) {
+    this.populate("appointments")
+    next()
+})
 
 const User = mongoose.model('User', userSchema);
 export default User;
