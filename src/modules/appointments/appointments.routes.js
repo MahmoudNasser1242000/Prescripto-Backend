@@ -8,13 +8,14 @@ import checkAppointmentId from "../../middlewares/checkAppointmentId.js";
 import checkAppointmentCreated from "../../middlewares/checkAppointmentCreated.js";
 import schemaValidation from "../../../services/validationSchema.js";
 import { addAppointmentSchema, appointmentIdSchema, updateAppointmentSchema } from "./appointment.validation.js";
+import checkAppointmentDateIsValid from "../../middlewares/checkAppointmentDateIsValid.js";
 
 const appointmentRouter = Router({mergeParams: true});
 
 appointmentRouter.use(protectAuth)
 
 appointmentRouter.route("/")
-    .post(roleAccess("user"), schemaValidation(addAppointmentSchema), checkDoctorId, checkUserId, checkAppointmentCreated, addappointment)
+    .post(roleAccess("user"), schemaValidation(addAppointmentSchema), checkDoctorId, checkUserId, checkAppointmentDateIsValid, checkAppointmentCreated, addappointment)
     .get(roleAccess("super-manager", "manager"), getAllAppointments)
 
 appointmentRouter.route("/:appointmentId")
