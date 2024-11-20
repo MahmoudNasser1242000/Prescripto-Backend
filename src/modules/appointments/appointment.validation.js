@@ -14,6 +14,7 @@ const updateAppointmentSchema = Joi.object({
     date: Joi.date()
         .required(),
 
+    appointmentId: Joi.string().hex().length(24).required(),
 }).options({ allowUnknown: false });
 
 const appointmentIdSchema = Joi.object({
