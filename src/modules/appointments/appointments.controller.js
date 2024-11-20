@@ -11,10 +11,10 @@ const addappointment = errorAsyncHandler(async (req, res, next) => {
 
 const getAllAppointments = errorAsyncHandler(async (req, res, next) => {
     let filterObj = {};
-    if (req.params.userId) {
-        filterObj.user = req.params.userId
-    } else if (req.params.docId) {
-        filterObj.doctor = req.params.docId
+    if (req.query.userId) {
+        filterObj.user = req.query.userId
+    } else if (req.query.docId) {
+        filterObj.doctor = req.query.docId
     }
     const appointments = await Appointment.find(filterObj);
     res.status(200).json({results: appointments.length, appointments})

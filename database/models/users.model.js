@@ -116,7 +116,7 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 
 userSchema.pre("findOneAndDelete", async function (next) {
     const docToDelete = await User.findOne(this.getQuery());
-    
+
     let folderPath;
     if (docToDelete.role === "user") {
         folderPath = `./uploads/users/${docToDelete.profile.split("uploads/")[1]}`
@@ -131,16 +131,19 @@ userSchema.pre("findOneAndDelete", async function (next) {
     next()
 })
 
-userSchema.virtual("appointments", { // name of new field in doctor schema
-    ref: "Appointment", // Appointment model
-    localField: "_id", // doctor id
-    foreignField: "user", // appointment field ref to doctor
-});
+// userSchema.virtual("appointments", { // name of new field in doctor schema
+//     ref: "Appointment", // Appointment model
+//     localField: "_id", // doctor id
+//     foreignField: "user", // appointment field ref to doctor
+// });
 
-userSchema.pre(/^find/, function (next) {
-    this.populate("appointments")
-    next()
-})
+// userSchema.pre(/^find/, function (next) {    
+//     this.populate({
+//         path: "appointments",
+//         populate: { path: "doctor" },
+//     })
+//     next()
+// })
 
 const User = mongoose.model('User', userSchema);
 export default User;

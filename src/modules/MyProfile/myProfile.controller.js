@@ -11,6 +11,7 @@ const getMyProfile = errorAsyncHandler(async (req, res, next) => {
     } else {
         profile = await User.findOne({_id: req.user._id});
     } 
+    
     if (!profile) 
         return next(new AppError("Wrong profile Id", 404))
     res.status(200).json({profile})

@@ -25,5 +25,17 @@ const appointmentSchema = new Schema({
     }
 }, { timestamps: true });
 
+appointmentSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: "user",
+        select: "name email birth_date profile"
+    })
+    this.populate({
+        path: "doctor",
+        select: "name speciality profile active available"
+    })
+    next()
+})
+
 const Appointment = mongoose.model('Appointment', appointmentSchema);
 export default Appointment;

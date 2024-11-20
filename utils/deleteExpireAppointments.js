@@ -5,7 +5,7 @@ const deleteExpireAppointments = errorAsyncHandler(async (req, res, next) => {
     await Appointment.deleteMany(
         { expireDate: { $lt: new Date() } },
     );
-    next();
+    next()
 });
 
 export default deleteExpireAppointments

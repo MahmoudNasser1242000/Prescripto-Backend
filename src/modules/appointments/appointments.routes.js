@@ -15,11 +15,11 @@ const appointmentRouter = Router({mergeParams: true});
 appointmentRouter.use(protectAuth)
 
 appointmentRouter.route("/")
-    .post(roleAccess("user"), schemaValidation(addAppointmentSchema), checkDoctorId, checkUserId, checkAppointmentDateIsValid, checkAppointmentCreated, addappointment)
-    .get(roleAccess("super-manager", "manager"), getAllAppointments)
+    .post(roleAccess("user"), schemaValidation(addAppointmentSchema), checkDoctorId, checkUserId, checkAppointmentCreated, checkAppointmentDateIsValid, addappointment)
+    .get(getAllAppointments)
 
 appointmentRouter.route("/:appointmentId")
-    .get(roleAccess("super-manager", "manager"), schemaValidation(appointmentIdSchema),  checkAppointmentId, getSpecificAppointment)
+    .get(schemaValidation(appointmentIdSchema),  checkAppointmentId, getSpecificAppointment)
     .delete(schemaValidation(appointmentIdSchema), checkAppointmentId, deleteAppointment)
     .patch(roleAccess("user"), schemaValidation(updateAppointmentSchema),  checkAppointmentId, upadteAppointment)
 

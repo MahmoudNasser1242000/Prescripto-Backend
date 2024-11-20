@@ -24,7 +24,7 @@ const getAllDoctors = errorAsyncHandler(async (req, res, next) => {
 })
 
 const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {
-    const doctor = await Doctor.findById(req.params.docId);
+    const doctor = await Doctor.findOne({_id: req.params.docId});
     res.status(200).json({doctor})
 })
 
