@@ -128,7 +128,7 @@ doctorSchema.pre("findOneAndUpdate", function (next) {
     next()
 })
 
-doctorSchema.pre("findOneAndUpdate", async function (next) {    
+doctorSchema.pre("findOneAndUpdate", async function (next) {
     if (this._update.profile) {
         const docToUpdate = await Doctor.findOne(this.getQuery());
         fs.unlink(`./uploads/doctors/${docToUpdate.profile.split("uploads/")[1]}`, (err) => {
@@ -163,6 +163,22 @@ doctorSchema.pre("findOneAndDelete", async function (next) {
 //     })
 //     next()
 // })
+
+doctorSchema
+    .virtual('age')
+    .get(function () {
+        const today = new Date();
+        const birth = this.birth_date;
+
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDifference = today.getMonth() - birth.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birth.getDate())) {
+            age -= 1;
+        }
+
+        return age
+    });
 
 const Doctor = mongoose.model('Doctor', doctorSchema);
 export default Doctor;

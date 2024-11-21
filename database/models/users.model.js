@@ -145,5 +145,21 @@ userSchema.pre("findOneAndDelete", async function (next) {
 //     next()
 // })
 
+userSchema
+    .virtual('age')
+    .get(function () {
+        const today = new Date();
+        const birth = this.birth_date;
+
+        let age = today.getFullYear() - birth.getFullYear();
+        const monthDifference = today.getMonth() - birth.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birth.getDate())) {
+            age -= 1;
+        }
+
+        return age
+    });
+
 const User = mongoose.model('User', userSchema);
 export default User;
