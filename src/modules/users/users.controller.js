@@ -3,11 +3,7 @@ import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
 import AppError from "../../../utils/AppErrorClass.js";
 
 const addUserManager = errorAsyncHandler(async (req, res, next) => {    
-    if (req.file) {
-        req.body.profile = req.file.filename;
-    } else {
-        req.body.profile = "";
-    }
+    if (req.file) req.body.profile = req.file.filename;
     req.body.role = "manager";
     const userModel = new User(req.body);
     const user = await userModel.save()

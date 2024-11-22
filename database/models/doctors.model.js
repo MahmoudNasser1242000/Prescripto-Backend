@@ -9,7 +9,6 @@ const doctorSchema = new Schema({
     name: {
         type: String,
         required: true,
-        lowercase: true,
         trim: true,
         minLength: [3, "Doctor name must be at least 3 characters"],
         maxLength: [50, "Doctor name must be at most 50 characters"],

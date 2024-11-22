@@ -23,14 +23,17 @@ const deleteMyProfile = errorAsyncHandler(async (req, res, next) => {
 })
 
 const updateMyDoctorProfile = errorAsyncHandler(async (req, res, next) => {
+    if (req.file) req.body.profile = req.file.filename
     const doctor = await Doctor.findOneAndUpdate({_id: req.doctor._id}, req.body, {new: true});
     res.status(202).json({message: `Doctor updated successfully`, doctor})
 })
 const updateMyUserProfile = errorAsyncHandler(async (req, res, next) => {
+    if (req.file) req.body.profile = req.file.filename
     const user = await User.findOneAndUpdate({_id: req.user._id}, req.body, {new: true});
     res.status(202).json({message: `User updated successfully`, user})
 })
 const updateMyManagerProfile = errorAsyncHandler(async (req, res, next) => {
+    if (req.file) req.body.profile = req.file.filename
     const manager = await User.findOneAndUpdate({_id: req.user._id}, req.body, {new: true});
     res.status(202).json({message: `Manager updated successfully`, manager})
 })

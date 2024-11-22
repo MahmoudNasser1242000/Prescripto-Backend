@@ -21,6 +21,7 @@ const updateUserORMmanagerProfileSchema = Joi.object({
         .min(3)
         .max(1000)
         .optional()
+        .allow(null, "")
         .messages({
             "string.min": "about field must be at least 3 characters",
             "string.max": "about field must be at most 1000 characters"
@@ -50,6 +51,10 @@ const updateUserORMmanagerProfileSchema = Joi.object({
             "string.max": "Job field must be at most 100 characters"
         }),
 
+    profile: Joi.string()
+        .allow(null, " ")
+        .optional(),
+
     image: Joi.object({
         fieldname: Joi.string().required(),
         originalname: Joi.string().required(),
@@ -60,7 +65,7 @@ const updateUserORMmanagerProfileSchema = Joi.object({
         path: Joi.string().required(),
         size: Joi.number().max(5242880).required()
     }).optional()
-})
+}).options({ allowUnknown: false });
 
 const updateDoctorProfileSchema = Joi.object({
     name: Joi.string()

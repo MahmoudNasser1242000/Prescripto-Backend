@@ -9,7 +9,6 @@ const userSchema = new Schema({
     name: {
         type: String,
         required: true,
-        lowercase: true,
         trim: true,
         minLength: [3, "Doctor name must be at least 3 characters"],
         maxLength: [50, "Doctor name must be at most 50 characters"],
@@ -96,9 +95,10 @@ userSchema.pre("findOneAndUpdate", function (next) {
 })
 
 userSchema.pre("findOneAndUpdate", async function (next) {
-    if (this._update.profile) {
-        const docToUpdate = await User.findOne(this.getQuery());
+    const docToUpdate = await User.findOne({ _id: this.getQuery() });
 
+    if (this._update.profile && docToUpdate.profile) {
+        
         let folderPath;
         if (docToUpdate.role === "user") {
             folderPath = `./uploads/users/${docToUpdate.profile.split("uploads/")[1]}`
@@ -117,17 +117,19 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 userSchema.pre("findOneAndDelete", async function (next) {
     const docToDelete = await User.findOne(this.getQuery());
 
-    let folderPath;
-    if (docToDelete.role === "user") {
-        folderPath = `./uploads/users/${docToDelete.profile.split("uploads/")[1]}`
-    } else {
-        folderPath = `./uploads/managers/${docToDelete.profile.split("uploads/")[1]}`
-    }
-    fs.unlinkSync(folderPath, (err) => {
-        if (err) {
-            return next(new AppError("Can not find this profile image", 404))
+    if (docToDelete.profile !== "") {
+        let folderPath;
+        if (docToDelete.role === "user") {
+            folderPath = `./uploads/users/${docToDelete.profile.split("uploads/")[1]}`
+        } else {
+            folderPath = `./uploads/managers/${docToDelete.profile.split("uploads/")[1]}`
         }
-    })
+        fs.unlinkSync(folderPath, (err) => {
+            if (err) {
+                return next(new AppError("Can not find this profile image", 404))
+            }
+        })
+    }
     next()
 })
 
