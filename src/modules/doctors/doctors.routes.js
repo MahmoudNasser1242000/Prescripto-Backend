@@ -17,7 +17,7 @@ doctorRouter.use("/:docId/appointments", roleAccess("super-manager", "manager"),
 
 doctorRouter.route("/")
     .post(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(addDoctorSchema), checkDoctorEmail, addDoctor)
-    .get(protectAuth, schemaValidation(getDoctorSchema), getAllDoctors)
+    .get(schemaValidation(getDoctorSchema), getAllDoctors)
 
 doctorRouter.route("/:docId")
     .patch(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)

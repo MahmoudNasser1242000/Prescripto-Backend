@@ -47,11 +47,8 @@ const doctorSchema = new Schema({
         maxLength: [50, "Degree must be at most 50 characters"],
     },
     experience: {
-        type: String,
+        type: Number,
         required: true,
-        trim: true,
-        minLength: [3, "Experience must be at least 3 characters"],
-        maxLength: [50, "Experience must be at most 50 characters"],
     },
     about: {
         type: String,

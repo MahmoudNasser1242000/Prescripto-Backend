@@ -8,7 +8,7 @@ const UpdateUserActivity = errorAsyncHandler(async (req, res, next) => {
             {active: false, activeExpire: { $lt: new Date() } },
             { active: true, activeExpire: "0000-01-01T00:00:00Z" }
         );
-    } else {
+    } else if (req.user) {
         await User.updateMany(
             {active: false, activeExpire: { $lt: new Date() } },
             { active: true, activeExpire: "0000-01-01T00:00:00Z" }

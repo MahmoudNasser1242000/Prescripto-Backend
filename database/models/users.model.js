@@ -117,7 +117,7 @@ userSchema.pre("findOneAndUpdate", async function (next) {
 userSchema.pre("findOneAndDelete", async function (next) {
     const docToDelete = await User.findOne(this.getQuery());
 
-    if (docToDelete.profile !== "") {
+    if (docToDelete.profile) {
         let folderPath;
         if (docToDelete.role === "user") {
             folderPath = `./uploads/users/${docToDelete.profile.split("uploads/")[1]}`

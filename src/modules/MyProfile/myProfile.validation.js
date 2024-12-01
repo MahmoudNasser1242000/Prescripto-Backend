@@ -102,14 +102,8 @@ const updateDoctorProfileSchema = Joi.object({
             "string.max": "degree must be at most 50 characters"
         }),
 
-    experience: Joi.string()
-        .min(3)
-        .max(50)
-        .optional()
-        .messages({
-            "string.min": "experience must be at least 3 characters",
-            "string.max": "experience must be at most 50 characters"
-        }),
+    experience: Joi.number()
+        .optional(),
 
     about: Joi.string()
         .min(3)

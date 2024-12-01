@@ -44,7 +44,7 @@ const changeDoctorPassword = errorAsyncHandler(async (req, res, next) => {
     if (!comparePass) 
         return next(new AppError("Wrong doctor password", 400))
     
-    const doctor = await Doctor.findOneAndUpdate({_id: req.user._id}, {password: newPassword, changePasswordAt: new Date()}, {new: true});
+    const doctor = await Doctor.findOneAndUpdate({_id: req.doctor._id}, {password: newPassword, changePasswordAt: new Date()}, {new: true});
     res.status(202).json({message: `Password updated successfully`, doctor})
 })
 const changeUserPassword = errorAsyncHandler(async (req, res, next) => {

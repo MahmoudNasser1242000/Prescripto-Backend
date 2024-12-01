@@ -24,7 +24,7 @@ userRouter.route("/")
     .get(roleAccess("super-manager", "manager"), getAllusers)
 
 userRouter.route("/:userId")
-    .get(roleAccess("super-manager", "manager", "doctor"), schemaValidation(userIdSchema), checkUserId, getSpecificUser)
+    .get(roleAccess("super-manager", "manager"), schemaValidation(userIdSchema), checkUserId, getSpecificUser)
     .delete(roleAccess("super-manager", "manager"), schemaValidation(userIdSchema), checkUserId, protectSuperManager, deleteUser)
     .patch(roleAccess("super-manager", "manager"), schemaValidation(updateUserSchema), checkUserId, protectSuperManager, updateUser)
     

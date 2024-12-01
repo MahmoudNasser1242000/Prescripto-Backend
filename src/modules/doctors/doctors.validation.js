@@ -23,7 +23,7 @@ const addDoctorSchema = Joi.object({
         .max(50)
         .pattern(/^(?=.*\d{3,})(?=(.*[\W_])+)(?=.*[a-zA-Z]{2,})(?=.*[A-Z]+).{6,20}$/)
         .messages({
-            "string.pattern": `Password must contains at least 3 numbers,
+            "string.pattern.base": `Password must contains at least 3 numbers,
             2 characters one of them must be uppercase 
             and one special character`,
             "string.min": "Password must be 6 to 50 characters",
@@ -55,14 +55,8 @@ const addDoctorSchema = Joi.object({
             "string.max": "degree must be at most 50 characters"
         }),
 
-    experience: Joi.string()
-        .min(3)
-        .max(50)
-        .required()
-        .messages({
-            "string.min": "experience must be at least 3 characters",
-            "string.max": "experience must be at most 50 characters"
-        }),
+    experience: Joi.number()
+        .required(),
 
     about: Joi.string()
         .min(3)
@@ -93,8 +87,8 @@ const addDoctorSchema = Joi.object({
         .max(8)
         .required()
         .messages({
-            "array.min": "Examination dates length must be at least 3 items",
-            "array.max": "Examination dates length must be at most 50 items",
+            "array.min": "Examination dates length must be at least 1 items",
+            "array.max": "Examination dates length must be at most 8 items",
             "array.unique": "Examination dates must be unique"
         }),
 
