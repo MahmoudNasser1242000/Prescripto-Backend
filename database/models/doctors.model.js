@@ -82,10 +82,6 @@ const doctorSchema = new Schema({
         trim: true,
         required: true
     },
-    available: {
-        type: Boolean,
-        default: true
-    },
     fees: {
         type: Number,
         required: true,
@@ -96,7 +92,7 @@ const doctorSchema = new Schema({
     },
     activeExpire: {
         type: Date,
-        default: "0000-01-01T00:00:00Z"
+        default: null,
     },
     birth_date: {
         type: Date,

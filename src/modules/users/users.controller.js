@@ -47,8 +47,9 @@ const getSpecificUser = errorAsyncHandler(async (req, res, next) => {
 })
 
 const updateUser = errorAsyncHandler(async (req, res, next) => {
+    if (req.body.active === true) req.body.activeExpire = new Date("0000-01-01T00:00:00Z");
     const user = await User.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true});
-    res.status(202).json({message: `${user.role === "user"? "User":"Manager"} updated successfully`, user})
+    res.status(202).json({message: `User updated successfully`, user})
 })
 
 const deleteUser = errorAsyncHandler(async (req, res, next) => {

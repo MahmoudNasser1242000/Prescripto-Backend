@@ -8,6 +8,7 @@ import { addDoctorSchema, doctorIdSchema, getDoctorSchema, updateDoctorSchema } 
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import roleAccess from "../../middlewares/roleAccess.js";
 import appointmentRouter from "../appointments/appointments.routes.js";
+import checkActiveExpireDateIsValid from "../../middlewares/checkActiveExpireDateIsValid.js";
 
 const doctorRouter = Router({mergeParams: true});
 
@@ -20,7 +21,7 @@ doctorRouter.route("/")
     .get(schemaValidation(getDoctorSchema), getAllDoctors)
 
 doctorRouter.route("/:docId")
-    .patch(roleAccess("super-manager", "manager"), filesUpload("doctors").single("image"), schemaValidation(updateDoctorSchema), checkDoctorId, checkDoctorEmail, updateDoctor)
+    .patch(roleAccess("super-manager", "manager"), schemaValidation(updateDoctorSchema), checkDoctorId, checkActiveExpireDateIsValid,  updateDoctor)
     .delete(roleAccess("super-manager", "manager"), schemaValidation(doctorIdSchema), checkDoctorId, deleteDoctor)
     .get(schemaValidation(doctorIdSchema), checkDoctorId, getSpecificDoctor)
 

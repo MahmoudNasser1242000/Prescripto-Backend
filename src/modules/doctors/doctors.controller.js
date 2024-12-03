@@ -29,7 +29,6 @@ const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {
 })
 
 const updateDoctor = errorAsyncHandler(async (req, res, next) => {
-    if (req.file) req.body.profile = req.file.filename;
     const doctor = await Doctor.findOneAndUpdate({_id: req.params.docId}, req.body, {new: true});
     res.status(202).json({message: "Doctor updated successfully", doctor})
 })

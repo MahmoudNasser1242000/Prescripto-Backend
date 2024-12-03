@@ -64,7 +64,7 @@ const userSchema = new Schema({
     },
     activeExpire: {
         type: Date,
-        default: "0000-01-01T00:00:00Z"
+        default: null
     },
     bio: {
         type: String,

@@ -110,10 +110,6 @@ const addDoctorSchema = Joi.object({
         .required()
         .pattern(/^01([0-2]|5)[0-9]{8}$/),
 
-    available: Joi.boolean()
-        .optional()
-        .default(true),
-
     fees: Joi.number()
         .required(),
 
@@ -133,16 +129,11 @@ const addDoctorSchema = Joi.object({
 })
 
 const updateDoctorSchema = Joi.object({
-    available: Joi.boolean()
-        .optional()
-        .default(true),
-
     active: Joi.boolean()
-        .default(true)
-        .optional(),
+        .required(),
 
     activeExpire: Joi.date()
-        .default("0000-01-01T00:00:00Z")
+        .allow(null)
         .optional(),
 
     docId: Joi.string().hex().length(24).optional(),

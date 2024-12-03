@@ -77,14 +77,6 @@ const addUserSchema = Joi.object({
             "string.max": "Job field must be at most 100 characters"
         }),
 
-    active: Joi.boolean()
-        .default(true)
-        .optional(),
-
-    activeExpire: Joi.date()
-        .default("0000-01-01T00:00:00Z")
-        .optional(),
-
     image: Joi.object({
         fieldname: Joi.string().required(),
         originalname: Joi.string().required(),
@@ -99,9 +91,10 @@ const addUserSchema = Joi.object({
 
 const updateUserSchema = Joi.object({
     active: Joi.boolean()
-        .optional(),
+        .required(),
 
     activeExpire: Joi.date()
+        .allow(null)
         .optional(),
 
     userId: Joi.string().hex().length(24).required(),
