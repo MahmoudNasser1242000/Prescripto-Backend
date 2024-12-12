@@ -2,7 +2,7 @@ import {Router} from "express"
 import protectAuth from "../../middlewares/ProtectAuth.js";
 import checkUserEmail from "../../middlewares/checkUserEmail.js";
 import checkDoctorEmail from "../../middlewares/checkDoctorEmail.js";
-import { addUserManager, deleteUser, getAllManagers, getAllusers, getSpecificUser, updateUser } from "./users.controller.js";
+import { addUserManager, deleteUser, getAllusers, getSpecificUser, updateUser } from "./users.controller.js";
 import roleAccess from "../../middlewares/roleAccess.js";
 import filesUpload from "../../../services/filesUpload.js";
 import checkUserId from "../../middlewares/checkUserId.js";
@@ -16,8 +16,6 @@ const userRouter = Router();
 userRouter.use(protectAuth)
 
 userRouter.use("/:userId/appointments", roleAccess("super-manager", "manager"), schemaValidation(userIdSchema), checkUserId, appointmentRouter)
-
-userRouter.get("/getAllManagers", roleAccess("super-manager", "manager"), getAllManagers)
 
 userRouter.route("/")
     .post(roleAccess("super-manager", "manager"), filesUpload("managers").single("image"), schemaValidation(addUserSchema), checkUserEmail, checkDoctorEmail, addUserManager)

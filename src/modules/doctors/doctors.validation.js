@@ -130,7 +130,7 @@ const addDoctorSchema = Joi.object({
 
 const updateDoctorSchema = Joi.object({
     active: Joi.boolean()
-        .required(),
+        .optional(),
 
     activeExpire: Joi.date()
         .allow(null)
@@ -138,6 +138,34 @@ const updateDoctorSchema = Joi.object({
 
     docId: Joi.string().hex().length(24).optional(),
 }).options({ allowUnknown: false });
+
+const updateDoctorDatesSchema = Joi.object({
+    times: Joi.string().required(),
+        // .items(Joi.object({
+        //     time: Joi.string()
+        //         .required()
+        //         .pattern(/^(0[1-9]|10|11|12):([0-5][0-9])$/)
+        //         .messages({
+        //             "string.pattern.base": `Time must be valid, For example: 02:00`
+        //         }),
+        //     modifier: Joi.string()
+        //         .required()
+        //         .valid("PM", "AM")
+        //         .messages({
+        //             "any.valid": "Modifier must be one of PM or AM",
+        //         }),
+        // }))
+        // .unique()
+        // .min(1)
+        // .max(8)
+        // .required()
+        // .messages({
+        //     "array.min": "Examination dates length must be at least 1 items",
+        //     "array.max": "Examination dates length must be at most 8 items",
+        //     "array.unique": "Examination dates must be unique"
+        // }),
+    docId: Joi.string().hex().length(24).optional(),
+})
 
 const getDoctorSchema = Joi.object({
     name: Joi.string()
@@ -153,5 +181,6 @@ export {
     addDoctorSchema,
     updateDoctorSchema,
     doctorIdSchema,
-    getDoctorSchema
+    getDoctorSchema,
+    updateDoctorDatesSchema
 }

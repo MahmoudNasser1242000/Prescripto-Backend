@@ -32,6 +32,12 @@ const updateDoctor = errorAsyncHandler(async (req, res, next) => {
     const doctor = await Doctor.findOneAndUpdate({_id: req.params.docId}, req.body, {new: true});
     res.status(202).json({message: "Doctor updated successfully", doctor})
 })
+const updateDoctorExamination_dates = errorAsyncHandler(async (req, res, next) => {
+    if (req.body.times)
+        req.body.times = JSON.parse(req.body.times)    
+    const doctor = await Doctor.findOneAndUpdate({_id: req.params.docId}, {examination_dates: req.body.times}, {new: true});
+    res.status(202).json({message: "Doctor Dates updated successfully", doctor})
+})
 
 const deleteDoctor = errorAsyncHandler(async (req, res, next) => {
     const doctor = await Doctor.findOneAndDelete({_id: req.params.docId});
@@ -43,5 +49,6 @@ export {
     getAllDoctors,
     getSpecificDoctor,
     updateDoctor,
-    deleteDoctor
+    deleteDoctor,
+    updateDoctorExamination_dates
 }

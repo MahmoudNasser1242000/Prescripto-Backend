@@ -15,23 +15,28 @@ const addExaminationDate = errorAsyncHandler(async (req, res, next) => {
         },
         { new: true }
     )
-    res.status(201).json({message: "Examination date created successfully", doctor})
+    res.status(201).json({message: "Date created successfully", doctor})
 });
 
 const updateExaminationDate = errorAsyncHandler(async (req, res, next) => {   
     const {docId, timeId} = req.params
-    const doctor = await Doctor.findOne({_id: docId});
+    let doctor;
+    doctor = await Doctor.findOne({_id: docId});
     if (!doctor)
         return next(new AppError("Can not find doctor with this id", 404));
 
     const examinationDate = doctor.examination_dates.findIndex((time) => time._id.toString() === timeId.toString());
     if (examinationDate === -1)
-        return next(new AppError("Can not find examination date with this id", 404));
+        return next(new AppError("Can not find Date with this id", 404));
 
     doctor.examination_dates[examinationDate].time = req.body.newTime.time;
     doctor.examination_dates[examinationDate].modifier = req.body.newTime.modifier;
+
+    doctor.profile = doctor.profile.split("http://localhost:3000/uploads/")[1]    
     await doctor.save()
-    res.status(202).json({message: "Examination date created successfully", doctor})
+
+    doctor = await Doctor.findOne({_id: docId});
+    res.status(202).json({message: "Date updated successfully", doctor})
 });
 
 const removeExaminationDate = errorAsyncHandler(async (req, res, next) => {   
@@ -42,7 +47,7 @@ const removeExaminationDate = errorAsyncHandler(async (req, res, next) => {
 
     const examinationDate = doctorExist.examination_dates.find((time) => time._id.toString() === timeId.toString());
     if (!examinationDate)
-        return next(new AppError("Can not find examination date with this id", 404));
+        return next(new AppError("Can not find Date with this id", 404));
 
     const doctor = await Doctor.findOneAndUpdate(
         {_id: docId},
@@ -51,7 +56,7 @@ const removeExaminationDate = errorAsyncHandler(async (req, res, next) => {
         },
         { new: true }
     )
-    res.status(202).json({message: "Examination date removed successfully", doctor})
+    res.status(202).json({message: "Date removed successfully", doctor})
 })
 
 export {

@@ -12,7 +12,7 @@ const addUserManager = errorAsyncHandler(async (req, res, next) => {
 
 const getAllusers = errorAsyncHandler(async (req, res, next) => {   
     const {name} = req.query
-    const filterObj = {role: "user"}
+    const filterObj = {}
     if (name) {
         filterObj.name = {
             $regex: new RegExp(
@@ -23,20 +23,6 @@ const getAllusers = errorAsyncHandler(async (req, res, next) => {
     }
     const users = await User.find(filterObj);
     res.status(200).json({results: users.length, users})
-})
-const getAllManagers = errorAsyncHandler(async (req, res, next) => {  
-    const {name} = req.query
-    const filterObj = {role: {$in: ["manager", "super-manager"]}}
-    if (name) {
-        filterObj.name = {
-            $regex: new RegExp(
-                name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"),
-                "i"
-            ),
-        };
-    }  
-    const managers = await User.find(filterObj);
-    res.status(200).json({results: managers.length, managers})
 })
 
 const getSpecificUser = errorAsyncHandler(async (req, res, next) => {    
@@ -59,7 +45,6 @@ const deleteUser = errorAsyncHandler(async (req, res, next) => {
 
 export {
     addUserManager,
-    getAllManagers,
     getAllusers,
     getSpecificUser,
     deleteUser,
