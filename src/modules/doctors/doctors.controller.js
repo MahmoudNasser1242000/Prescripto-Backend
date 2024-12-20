@@ -1,5 +1,6 @@
 import Doctor from "../../../database/models/doctors.model.js";
 import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
+import ApiFeatures from "../../../utils/apiFeatures.js";
 
 const addDoctor = errorAsyncHandler(async (req, res, next) => {    
     if (req.file) req.body.profile = req.file.filename;
@@ -9,18 +10,15 @@ const addDoctor = errorAsyncHandler(async (req, res, next) => {
 })
 
 const getAllDoctors = errorAsyncHandler(async (req, res, next) => {    
-    const {name} = req.query
-    const filterObj = {}
-    if (name) {
-        filterObj.name = {
-            $regex: new RegExp(
-                name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"),
-                "i"
-            ),
-        };
-    }
-    const doctors = await Doctor.find(filterObj);
-    res.status(200).json({results: doctors.length, doctors})
+    const collectionLength = (await Doctor.find()).length;
+    const apiFeatures = new ApiFeatures(Doctor.find(), req.query)
+        .pagination(collectionLength)
+        .filter()
+        .sort()
+        .search()
+        .fields();
+    const doctors = await apiFeatures.mongooseQuery;
+    res.status(200).json({results: doctors.length, metadata: apiFeatures.metadata, doctors})
 })
 
 const getSpecificDoctor = errorAsyncHandler(async (req, res, next) => {

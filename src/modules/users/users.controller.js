@@ -1,5 +1,6 @@
 import User from "../../../database/models/users.model.js";
 import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
+import ApiFeatures from "../../../utils/apiFeatures.js";
 import AppError from "../../../utils/AppErrorClass.js";
 
 const addUserManager = errorAsyncHandler(async (req, res, next) => {    
@@ -11,18 +12,15 @@ const addUserManager = errorAsyncHandler(async (req, res, next) => {
 })
 
 const getAllusers = errorAsyncHandler(async (req, res, next) => {   
-    const {name} = req.query
-    const filterObj = {}
-    if (name) {
-        filterObj.name = {
-            $regex: new RegExp(
-                name.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1"),
-                "i"
-            ),
-        };
-    }
-    const users = await User.find(filterObj);
-    res.status(200).json({results: users.length, users})
+    const collectionLength = (await User.find()).length;
+    const apiFeatures = new ApiFeatures(User.find(), req.query)
+        .pagination(collectionLength)
+        .filter()
+        .sort()
+        .search()
+        .fields();
+    const users = await apiFeatures.mongooseQuery;
+    res.status(200).json({results: users.length, metadata: apiFeatures.metadata, users})
 })
 
 const getSpecificUser = errorAsyncHandler(async (req, res, next) => {    

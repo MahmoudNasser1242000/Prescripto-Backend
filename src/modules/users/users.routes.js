@@ -15,7 +15,7 @@ const userRouter = Router();
 
 userRouter.use(protectAuth)
 
-userRouter.use("/:userId/appointments", roleAccess("super-manager", "manager"), schemaValidation(userIdSchema), checkUserId, appointmentRouter)
+userRouter.use("/:userId/appointments", roleAccess("super-manager", "manager", "user"), checkUserId, appointmentRouter)
 
 userRouter.route("/")
     .post(roleAccess("super-manager", "manager"), filesUpload("managers").single("image"), schemaValidation(addUserSchema), checkUserEmail, checkDoctorEmail, addUserManager)

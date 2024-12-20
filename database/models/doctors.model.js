@@ -160,7 +160,7 @@ doctorSchema
     .virtual('age')
     .get(function () {
         const today = new Date();
-        const birth = this.birth_date;
+        const birth = new Date(this.birth_date);
 
         let age = today.getFullYear() - birth.getFullYear();
         const monthDifference = today.getMonth() - birth.getMonth();

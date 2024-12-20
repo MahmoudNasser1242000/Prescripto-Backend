@@ -1,5 +1,6 @@
 import Appointment from "../../../database/models/appointments.model.js";
 import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
+import ApiFeatures from "../../../utils/apiFeatures.js";
 
 const addappointment = errorAsyncHandler(async (req, res, next) => {
     const newDate = new Date(req.body.date)
@@ -11,13 +12,20 @@ const addappointment = errorAsyncHandler(async (req, res, next) => {
 
 const getAllAppointments = errorAsyncHandler(async (req, res, next) => {
     let filterObj = {};
-    if (req.query.userId) {
-        filterObj.user = req.query.userId
-    } else if (req.query.docId) {
-        filterObj.doctor = req.query.docId
+    if (req.params.userId) {
+        filterObj.user = req.params.userId
+    } else if (req.params.docId) {
+        filterObj.doctor = req.params.docId
     }
-    const appointments = await Appointment.find(filterObj);
-    res.status(200).json({ results: appointments.length, appointments })
+    const collectionLength = (await Appointment.find(filterObj)).length;
+    const apiFeatures = new ApiFeatures(Appointment.find(filterObj), req.query)
+        .pagination(collectionLength)
+        .filter()
+        .sort()
+        .search()
+        .fields();
+    const appointments = await apiFeatures.mongooseQuery;
+    res.status(200).json({ results: appointments.length, metadata: apiFeatures.metadata, appointments })
 })
 
 const getSpecificAppointment = errorAsyncHandler(async (req, res, next) => {
