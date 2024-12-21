@@ -102,7 +102,7 @@ const doctorSchema = new Schema({
 
 doctorSchema.post("init", (doc) => {
     if (doc.profile) {
-        doc.profile = `http://localhost:3000/uploads/${doc.profile}`
+        doc.profile = `https://prescripto-backend-xi-one.vercel.app/uploads/${doc.profile}`
     }
 })
 
