@@ -13,9 +13,9 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/uploads", express.static("uploads/doctors"))
-app.use("/uploads", express.static("uploads/users"))
-app.use("/uploads", express.static("uploads/managers"))
+app.use("/uploads/doctors", express.static("uploads/doctors"))
+// app.use("/uploads", express.static("uploads/users"))
+// app.use("/uploads", express.static("uploads/managers"))
 
 app.use(cors())
 app.use(UpdateUserActivity)
