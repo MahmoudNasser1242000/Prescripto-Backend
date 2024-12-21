@@ -6,6 +6,7 @@ import AppError from './utils/AppErrorClass.js';
 import Bootstrap from './src/Bootstrap.js';
 import UpdateUserActivity from './utils/UpdateUserActivity.js';
 import deleteExpireAppointments from './utils/deleteExpireAppointments.js';
+import path from "path"
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -13,7 +14,7 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/uploads", express.static("uploads/doctors"))
+app.use("/uploads", express.static(path.join(__dirname, 'uploads/doctors')))
 app.use("/uploads", express.static("uploads/users"))
 app.use("/uploads", express.static("uploads/managers"))
 
