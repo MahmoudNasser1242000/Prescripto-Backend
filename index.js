@@ -13,7 +13,7 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
-app.use(express.static("public"));
+app.use("/uploads", express.static("public"));
 // app.use("/uploads", express.static("uploads/doctors"))
 // app.use("/uploads", express.static("uploads/users"))
 // app.use("/uploads", express.static("uploads/managers"))
