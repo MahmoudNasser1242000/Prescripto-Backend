@@ -2,6 +2,8 @@ import Doctor from "../../database/models/doctors.model.js";
 import User from "../../database/models/users.model.js";
 import AppError from "../../utils/AppErrorClass.js";
 import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+dotenv.config()
 
 const protectAuth = async (req, res, next) => {
     const {authorization} = req.headers;
@@ -12,7 +14,7 @@ const protectAuth = async (req, res, next) => {
     if (!token) 
         return next(new AppError("You are not authorized", 401));
 
-    const decodeToken = jwt.verify(token, "Login System");
+    const decodeToken = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
 
     if (decodeToken.role === "doctor") {
         const doctor = await Doctor.findOne({_id: decodeToken.docId});

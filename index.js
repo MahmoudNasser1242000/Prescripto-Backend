@@ -6,6 +6,8 @@ import AppError from './utils/AppErrorClass.js';
 import Bootstrap from './src/Bootstrap.js';
 import UpdateUserActivity from './utils/UpdateUserActivity.js';
 import deleteExpireAppointments from './utils/deleteExpireAppointments.js';
+import dotenv from "dotenv"
+dotenv.config()
 
 const app = express();
 app.use(express.json())

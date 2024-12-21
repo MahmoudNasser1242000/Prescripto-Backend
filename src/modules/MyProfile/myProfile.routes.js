@@ -20,5 +20,5 @@ myProfileRouter.patch("/changeUserPassword", roleAccess("super-manager", "manage
 
 myProfileRouter.route("/")
     .get(getMyProfile)
-    .delete(roleAccess("user"), deleteMyProfile)
+    .delete(roleAccess("user", "super-manager"), deleteMyProfile)
 export default myProfileRouter;

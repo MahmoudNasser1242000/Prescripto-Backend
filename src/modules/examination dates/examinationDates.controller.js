@@ -2,6 +2,10 @@ import Doctor from "../../../database/models/doctors.model.js";
 import errorAsyncHandler from "../../../services/errorAsyncHandler.js";
 import AppError from "../../../utils/AppErrorClass.js";
 
+// @desc      add date
+// @method    POST
+// @route     /api/v1/examinationDates/:docId
+// @access    (manager, super-manger)
 const addExaminationDate = errorAsyncHandler(async (req, res, next) => {   
     const {docId} = req.params
     const doctorExist = await Doctor.findOne({_id: docId});
@@ -18,6 +22,10 @@ const addExaminationDate = errorAsyncHandler(async (req, res, next) => {
     res.status(201).json({message: "Date created successfully", doctor})
 });
 
+// @desc      update date
+// @method    PATCH
+// @route     /api/v1/examinationDates/:docId/:timeId
+// @access    (manager, super-manger)
 const updateExaminationDate = errorAsyncHandler(async (req, res, next) => {   
     const {docId, timeId} = req.params
     let doctor;
@@ -39,6 +47,10 @@ const updateExaminationDate = errorAsyncHandler(async (req, res, next) => {
     res.status(202).json({message: "Date updated successfully", doctor})
 });
 
+// @desc      remove date
+// @method    DELETE
+// @route     /api/v1/examinationDates/:docId/:timeId
+// @access    (manager, super-manger)
 const removeExaminationDate = errorAsyncHandler(async (req, res, next) => {   
     const {docId, timeId} = req.params
     const doctorExist = await Doctor.findOne({_id: docId});
